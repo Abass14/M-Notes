@@ -4,9 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import android.widget.Toolbar
-import androidx.navigation.NavHost
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
@@ -42,12 +39,9 @@ class MainActivity : AppCompatActivity() {
                     showBottomNav()
                     binding.topAppBar.subtitle = "Reminder"
                 }
-                else -> hideBottoNav()
+                else -> hideBottomNav()
             }
         }
-
-
-
 
     }
 
@@ -61,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         binding.topAppBar.visibility = View.VISIBLE
     }
 
-    private fun hideBottoNav(){
+    private fun hideBottomNav(){
         binding.appBottomNav.visibility = View.GONE
         binding.topAppBar.visibility = View.GONE
     }
