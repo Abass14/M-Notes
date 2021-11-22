@@ -4,13 +4,19 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/button.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/edit_text.xml" value="0.18020833333333333" />
         <entry key="app/src/main/res/drawable/floating_button.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/drawable/ic_archive_24.xml" value="0.31145833333333334" />
+        <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.18020833333333333" />
         <entry key="app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.31145833333333334" />
+        <entry key="app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.18020833333333333" />
+        <entry key="app/src/main/res/drawable/ic_baseline_clear_24.xml" value="0.18020833333333333" />
+        <entry key="app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.18020833333333333" />
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.31145833333333334" />
         <entry key="app/src/main/res/drawable/ic_baseline_sticky_note_2_24.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/drawable/indicator_selected.xml" value="0.17447916666666666" />
         <entry key="app/src/main/res/drawable/indicator_unselected.xml" value="0.17447916666666666" />
+        <entry key="app/src/main/res/drawable/outline_button.xml" value="0.31145833333333334" />
         <entry key="app/src/main/res/drawable/splash_logo.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_archive.xml" value="0.16770833333333332" />
@@ -22,7 +28,11 @@
         <entry key="app/src/main/res/layout/fragment_reminder.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_splash_screen.xml" value="0.21" />
         <entry key="app/src/main/res/layout/fragment_write.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/fragment_write_archive.xml" value="0.28125" />
+        <entry key="app/src/main/res/layout/fragment_write_reminder.xml" value="0.13541666666666666" />
+        <entry key="app/src/main/res/layout/home_notes_layout.xml" value="0.1640625" />
         <entry key="app/src/main/res/layout/onboarding_layout.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/reminder_layout.xml" value="0.14947916666666666" />
         <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.2953125" />
         <entry key="app/src/main/res/menu/top_app_bar.xml" value="0.2953125" />
       </map>

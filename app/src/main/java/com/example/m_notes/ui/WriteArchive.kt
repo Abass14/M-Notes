@@ -5,20 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.example.m_notes.R
-import com.example.m_notes.databinding.FragmentHomeBinding
+import com.example.m_notes.databinding.FragmentWriteArchiveBinding
 
-class Home : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
+class WriteArchive : Fragment() {
+    private var _binding: FragmentWriteArchiveBinding? = null
     private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentWriteArchiveBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -28,24 +28,14 @@ class Home : Fragment() {
     }
 
     private fun clickListeners() {
-        binding.homeAddNotesBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_home2_to_write)
+        binding.archiveClear.setOnClickListener {
+            findNavController().popBackStack()
         }
-    }
-
-    fun onBackPressed(){
-        //Overriding onBack press to finish activity and exit app
-        val callback = object : OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                requireActivity().finish()
-                requireActivity().finishAffinity()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(callback)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }

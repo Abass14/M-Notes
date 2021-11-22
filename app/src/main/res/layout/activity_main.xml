@@ -17,6 +17,7 @@
         app:title="M-Notes"
         app:titleTextColor="@color/red_medium"
         android:elevation="10dp"
+        android:outlineSpotShadowColor="@color/red_medium"
         android:padding="5dp"
         app:subtitle="Home"
         app:subtitleTextColor="@color/black"/>
@@ -44,6 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:elevation="10dp"/>
+        android:elevation="10dp"
+        android:outlineSpotShadowColor="@color/red_medium"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
