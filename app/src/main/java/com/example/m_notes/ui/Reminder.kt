@@ -24,6 +24,13 @@ class Reminder : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        clickListeners()
+    }
+
+    private fun clickListeners() {
+        binding.setReminderBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_reminder_to_writeReminder)
+        }
     }
 
     fun onBackPressed(){

@@ -14,11 +14,15 @@
             android:id="@+id/action_archive_to_home2"
             app:destination="@id/home2" />
         <action
-            android:id="@+id/action_archive_to_write"
-            app:destination="@id/write" />
-        <action
             android:id="@+id/action_archive_to_profile"
-            app:destination="@id/profile" />
+            app:destination="@id/profile"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+        <action
+            android:id="@+id/action_archive_to_writeArchive"
+            app:destination="@id/writeArchive"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
     </fragment>
     <fragment
         android:id="@+id/home2"
@@ -27,16 +31,23 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_home2_to_reminder"
-            app:destination="@id/reminder" />
+            app:destination="@id/reminder"
+            app:popUpTo="@id/home2"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_home2_to_archive"
             app:destination="@id/archive" />
         <action
             android:id="@+id/action_home2_to_profile"
-            app:destination="@id/profile" />
+            app:destination="@id/profile"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
         <action
             android:id="@+id/action_home2_to_write"
-            app:destination="@id/write" />
+            app:destination="@id/write"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/onboardingOne"
@@ -46,6 +57,7 @@
         <action
             android:id="@+id/action_onboardingOne_to_home2"
             app:destination="@id/home2"
+            app:enterAnim="@android:anim/slide_in_left"
             app:popUpTo="@id/onboardingOne"
             app:popUpToInclusive="true" />
     </fragment>
@@ -74,7 +86,14 @@
             app:destination="@id/home2" />
         <action
             android:id="@+id/action_reminder_to_profile"
-            app:destination="@id/profile" />
+            app:destination="@id/profile"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+        <action
+            android:id="@+id/action_reminder_to_writeReminder"
+            app:destination="@id/writeReminder"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
     </fragment>
     <fragment
         android:id="@+id/splashScreen"
@@ -84,6 +103,7 @@
         <action
             android:id="@+id/action_splashScreen_to_onboardingOne"
             app:destination="@id/onboardingOne"
+            app:exitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/splashScreen"
             app:popUpToInclusive="true" />
     </fragment>
@@ -94,9 +114,33 @@
         tools:layout="@layout/fragment_write" >
         <action
             android:id="@+id/action_write_to_home2"
-            app:destination="@id/home2" />
+            app:destination="@id/home2"
+            app:popUpTo="@id/write"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_write_to_archive"
             app:destination="@id/archive" />
+    </fragment>
+    <fragment
+        android:id="@+id/writeReminder"
+        android:name="com.example.m_notes.ui.WriteReminder"
+        android:label="fragment_write_reminder"
+        tools:layout="@layout/fragment_write_reminder" >
+        <action
+            android:id="@+id/action_writeReminder_to_reminder"
+            app:destination="@id/reminder"
+            app:popUpTo="@id/writeReminder"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/writeArchive"
+        android:name="com.example.m_notes.ui.WriteArchive"
+        android:label="fragment_write_archive"
+        tools:layout="@layout/fragment_write_archive" >
+        <action
+            android:id="@+id/action_writeArchive_to_archive"
+            app:destination="@id/archive"
+            app:popUpTo="@id/writeArchive"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

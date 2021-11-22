@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.Write">
+    tools:context=".ui.WriteReminder">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/writeToolbar"
+            android:id="@+id/reminderWriteToolbar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <ImageButton
-                    android:id="@+id/writeClear"
+                    android:id="@+id/reminderClear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_baseline_clear_24"
@@ -37,32 +37,73 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginStart="20dp"/>
                 <ImageButton
-                    android:id="@+id/writeEdit"
+                    android:id="@+id/reminderEdit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_baseline_edit_24"
-                    app:layout_constraintEnd_toStartOf="@id/writeSave"
-                    app:layout_constraintTop_toTopOf="@id/writeClear"
-                    app:layout_constraintBottom_toBottomOf="@id/writeClear"
+                    app:layout_constraintEnd_toStartOf="@id/reminderSave"
+                    app:layout_constraintTop_toTopOf="@id/reminderClear"
+                    app:layout_constraintBottom_toBottomOf="@id/reminderClear"
                     android:layout_marginEnd="30dp"/>
                 <ImageButton
-                    android:id="@+id/writeSave"
+                    android:id="@+id/reminderSave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_baseline_check_24"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/writeClear"
-                    app:layout_constraintBottom_toBottomOf="@id/writeClear"
+                    app:layout_constraintTop_toTopOf="@id/reminderClear"
+                    app:layout_constraintBottom_toBottomOf="@id/reminderClear"
                     android:layout_marginEnd="20dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/setReminderDateBtn"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/outline_button"
+            android:text="Set Date"
+            android:textAllCaps="false"
+            app:layout_constraintTop_toBottomOf="@id/reminderWriteToolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/reminderDateTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/setReminderDateBtn"
+            app:layout_constraintEnd_toStartOf="@id/setReminderTimeBtn"
+            app:layout_constraintTop_toTopOf="@id/setReminderDateBtn"
+            android:text="20/06/2021"/>
+
+        <TextView
+            android:id="@+id/reminderTimeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/setReminderDateBtn"
+            app:layout_constraintStart_toStartOf="@id/reminderDateTxt"
+            app:layout_constraintEnd_toEndOf="@id/reminderDateTxt"
+            android:text="02:00PM"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/setReminderTimeBtn"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/outline_button"
+            android:text="Set Time"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/setReminderDateBtn"
+            android:layout_marginEnd="20dp"/>
+
         <EditText
-            android:id="@+id/writeEditText"
+            android:id="@+id/reminderEditText"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/edit_text"
-            app:layout_constraintTop_toBottomOf="@id/writeToolbar"
+            app:layout_constraintTop_toBottomOf="@id/setReminderDateBtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
