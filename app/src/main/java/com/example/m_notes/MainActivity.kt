@@ -1,5 +1,7 @@
 package com.example.m_notes
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -12,6 +14,7 @@ import com.example.m_notes.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private  lateinit var binding: ActivityMainBinding
+    private var exitDialog: AlertDialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -25,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             it.onNavDestinationSelected(navController)
         }
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
+        navController.addOnDestinationChangedListener { controller, destination, _ ->
             when(destination.id){
                 R.id.home2 -> {
                     showBottomNav()

@@ -63,6 +63,7 @@
             android:layout_height="40dp"
             android:background="@drawable/outline_button"
             android:text="Set Date"
+            android:fontFamily="@font/montserrat"
             android:textAllCaps="false"
             app:layout_constraintTop_toBottomOf="@id/reminderWriteToolbar"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,22 +71,36 @@
             android:layout_marginTop="10dp"/>
 
         <TextView
+            android:id="@+id/setDateErrorTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red_medium"
+            android:textSize="12sp"
+            android:fontFamily="@font/montserrat"
+            app:layout_constraintStart_toStartOf="@id/setReminderDateBtn"
+            app:layout_constraintTop_toBottomOf="@id/setReminderDateBtn"/>
+
+
+        <TextView
             android:id="@+id/reminderDateTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat"
             app:layout_constraintStart_toEndOf="@id/setReminderDateBtn"
             app:layout_constraintEnd_toStartOf="@id/setReminderTimeBtn"
             app:layout_constraintTop_toTopOf="@id/setReminderDateBtn"
-            android:text="20/06/2021"/>
+            />
 
         <TextView
             android:id="@+id/reminderTimeTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat"
             app:layout_constraintBottom_toBottomOf="@id/setReminderDateBtn"
             app:layout_constraintStart_toStartOf="@id/reminderDateTxt"
-            app:layout_constraintEnd_toEndOf="@id/reminderDateTxt"
-            android:text="02:00PM"/>
+            app:layout_constraintEnd_toEndOf="@id/reminderDateTxt" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/setReminderTimeBtn"
@@ -93,10 +108,20 @@
             android:layout_height="40dp"
             android:background="@drawable/outline_button"
             android:text="Set Time"
+            android:fontFamily="@font/montserrat"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/setReminderDateBtn"
             android:layout_marginEnd="20dp"/>
+        <TextView
+            android:id="@+id/setTimeErrorTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/setReminderTimeBtn"
+            app:layout_constraintTop_toBottomOf="@id/setReminderTimeBtn"
+            android:textColor="@color/red_medium"/>
 
         <EditText
             android:id="@+id/reminderEditText"
@@ -111,8 +136,8 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:gravity="top|start"
-            android:editable="false"
-            android:hint="Tap Edit Icon to write...."
+            android:clickable="true"
+            android:hint="Write here...."
             android:padding="15dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

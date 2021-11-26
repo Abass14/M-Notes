@@ -32,8 +32,7 @@
         <action
             android:id="@+id/action_home2_to_reminder"
             app:destination="@id/reminder"
-            app:popUpTo="@id/home2"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_home2_to_archive"
             app:destination="@id/archive" />
@@ -46,8 +45,7 @@
             android:id="@+id/action_home2_to_write"
             app:destination="@id/write"
             app:enterAnim="@android:anim/fade_in"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popUpToInclusive="false" />
+            app:popEnterAnim="@android:anim/fade_in" />
     </fragment>
     <fragment
         android:id="@+id/onboardingOne"

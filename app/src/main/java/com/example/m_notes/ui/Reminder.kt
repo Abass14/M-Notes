@@ -1,18 +1,23 @@
 package com.example.m_notes.ui
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.example.m_notes.R
 import com.example.m_notes.databinding.FragmentReminderBinding
+import java.text.DateFormat
+import java.util.*
 
 class Reminder : Fragment() {
     private var _binding: FragmentReminderBinding? = null
     private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,18 +38,10 @@ class Reminder : Fragment() {
         }
     }
 
-    fun onBackPressed(){
-        //Overriding onBack press to finish activity and exit app
-        val callback = object : OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                findNavController().navigate(R.id.action_reminder_to_home2)
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(callback)
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }

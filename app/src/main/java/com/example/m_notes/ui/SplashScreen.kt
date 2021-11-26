@@ -25,10 +25,18 @@ class SplashScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun navigate(){
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
             findNavController().navigate(R.id.action_splashScreen_to_onboardingOne)
         }, 2000)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        navigate()
     }
 
     override fun onDestroyView() {
