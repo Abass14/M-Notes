@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.ReminderReadEdit">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/reminderEditToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/white"
+            android:elevation="15dp"
+            android:outlineSpotShadowColor="@color/red_medium">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageButton
+                    android:id="@+id/reminderEditClear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_baseline_clear_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="20dp"/>
+                <ImageButton
+                    android:id="@+id/reminderEditEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_baseline_edit_24"
+                    app:layout_constraintEnd_toStartOf="@id/reminderEditSave"
+                    app:layout_constraintTop_toTopOf="@id/reminderEditClear"
+                    app:layout_constraintBottom_toBottomOf="@id/reminderEditClear"
+                    android:layout_marginEnd="30dp"/>
+                <ImageButton
+                    android:id="@+id/reminderEditSave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_baseline_check_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/reminderEditClear"
+                    app:layout_constraintBottom_toBottomOf="@id/reminderEditClear"
+                    android:layout_marginEnd="20dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/setReminderEditDateBtn"
+            android:layout_width="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:layout_height="40dp"
+            android:background="@drawable/outline_button"
+            android:text="Update Date"
+            android:fontFamily="@font/montserrat"
+            android:textAllCaps="false"
+            app:layout_constraintTop_toBottomOf="@id/reminderEditToolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/setDateEditErrorTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red_medium"
+            android:textSize="12sp"
+            android:fontFamily="@font/montserrat"
+            app:layout_constraintStart_toStartOf="@id/setReminderEditDateBtn"
+            app:layout_constraintTop_toBottomOf="@id/setReminderEditDateBtn"/>
+
+
+        <TextView
+            android:id="@+id/reminderEditDateTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat"
+            app:layout_constraintStart_toEndOf="@id/setReminderEditDateBtn"
+            app:layout_constraintEnd_toStartOf="@id/setReminderEditTimeBtn"
+            app:layout_constraintTop_toTopOf="@id/setReminderEditDateBtn"
+            />
+
+        <TextView
+            android:id="@+id/reminderEditTimeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat"
+            app:layout_constraintBottom_toBottomOf="@id/setReminderEditDateBtn"
+            app:layout_constraintStart_toStartOf="@id/reminderEditDateTxt"
+            app:layout_constraintEnd_toEndOf="@id/reminderEditDateTxt" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/setReminderEditTimeBtn"
+            android:layout_width="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:layout_height="40dp"
+            android:background="@drawable/outline_button"
+            android:text="Update Time"
+            android:fontFamily="@font/montserrat"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/setReminderEditDateBtn"
+            android:layout_marginEnd="20dp"/>
+        <TextView
+            android:id="@+id/setTimeEditErrorTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/setReminderEditTimeBtn"
+            app:layout_constraintTop_toBottomOf="@id/setReminderEditTimeBtn"
+            android:textColor="@color/red_medium"/>
+
+        <EditText
+            android:id="@+id/reminderEditEditText"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/edit_text"
+            app:layout_constraintTop_toBottomOf="@id/setReminderEditDateBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="top|start"
+            android:enabled="false"
+            android:hint="Write here...."
+            android:padding="15dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

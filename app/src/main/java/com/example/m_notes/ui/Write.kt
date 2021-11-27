@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.m_notes.R
 import com.example.m_notes.databinding.FragmentWriteBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class Write : Fragment() {
     private  var _binding: FragmentWriteBinding? = null
     private val binding get() = _binding!!

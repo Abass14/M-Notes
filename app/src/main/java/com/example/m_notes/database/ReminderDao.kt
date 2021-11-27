@@ -13,8 +13,11 @@ interface ReminderDao {
     @Query("SELECT * FROM ReminderTable")
     fun getReminders() : LiveData<MutableList<ReminderModel>>
 
-    @Delete
-    suspend fun deleteReminder(reminder: ReminderModel)
+    @Query("SELECT * FROM ReminderTable WHERE id=:id")
+    fun getReminderById(id: Int) : LiveData<ReminderModel>
+
+    @Query("DELETE FROM ReminderTable WHERE id=:id")
+    suspend fun deleteReminder(id: Int)
 
     @Query("UPDATE ReminderTable SET date=:date, time=:time, note=:note WHERE id=:id")
     suspend fun updateReminder(date: String, time: String, note: String, id:Int)

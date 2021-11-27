@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.m_notes.model.ArchiveModel
 import com.example.m_notes.model.HomeNoteModel
 import com.example.m_notes.model.ReminderModel
 
 @Database(
     entities = [
         HomeNoteModel::class,
+        ArchiveModel::class,
         ReminderModel::class
                ],
     version = 1,

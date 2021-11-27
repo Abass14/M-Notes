@@ -58,11 +58,26 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <EditText
+            android:id="@+id/WriteArchiveTitle"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toBottomOf="@id/archiveToolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/writeEditText"
+            android:background="@drawable/edit_text"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:paddingHorizontal="15dp"
+            android:hint="Title"/>
+
+
+        <EditText
             android:id="@+id/writeEditText"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/edit_text"
-            app:layout_constraintTop_toBottomOf="@id/archiveToolbar"
+            app:layout_constraintTop_toBottomOf="@id/WriteArchiveTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -70,7 +85,6 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:gravity="top|start"
-            android:editable="false"
             android:hint="Tap Edit Icon to write...."
             android:padding="15dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

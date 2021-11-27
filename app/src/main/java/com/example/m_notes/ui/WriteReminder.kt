@@ -19,8 +19,9 @@ import android.widget.TimePicker
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.widget.Toast
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class WriteReminder : Fragment() {
     private var _binding: FragmentWriteReminderBinding? = null
     private val binding get() = _binding!!

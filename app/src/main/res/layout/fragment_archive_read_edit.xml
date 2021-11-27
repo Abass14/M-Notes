@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.Write">
+    tools:context=".ui.ArchiveReadEdit">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/writeToolbar"
+            android:id="@+id/editArchiveToolbar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <ImageButton
-                    android:id="@+id/writeClear"
+                    android:id="@+id/editArchiveClear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_baseline_clear_24"
@@ -37,52 +37,55 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginStart="20dp"/>
                 <ImageButton
-                    android:id="@+id/writeEdit"
+                    android:id="@+id/editArchiveEdit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_baseline_edit_24"
-                    app:layout_constraintEnd_toStartOf="@id/writeSave"
-                    app:layout_constraintTop_toTopOf="@id/writeClear"
-                    app:layout_constraintBottom_toBottomOf="@id/writeClear"
+                    app:layout_constraintEnd_toStartOf="@id/editArchiveSave"
+                    app:layout_constraintTop_toTopOf="@id/editArchiveClear"
+                    app:layout_constraintBottom_toBottomOf="@id/editArchiveClear"
                     android:layout_marginEnd="30dp"/>
                 <ImageButton
-                    android:id="@+id/writeSave"
+                    android:id="@+id/editArchiveSave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_baseline_check_24"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/writeClear"
-                    app:layout_constraintBottom_toBottomOf="@id/writeClear"
+                    app:layout_constraintTop_toTopOf="@id/editArchiveClear"
+                    app:layout_constraintBottom_toBottomOf="@id/editArchiveClear"
                     android:layout_marginEnd="20dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <EditText
-            android:id="@+id/writeTitle"
+            android:id="@+id/editArchiveTitle"
             android:layout_width="0dp"
             android:layout_height="50dp"
+            app:layout_constraintTop_toBottomOf="@id/editArchiveToolbar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/writeToolbar"
+            app:layout_constraintBottom_toTopOf="@id/editEditText"
             android:background="@drawable/edit_text"
-            android:hint="Title"
-            android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
-            android:paddingHorizontal="15dp"/>
+            android:layout_marginHorizontal="20dp"
+            android:paddingHorizontal="15dp"
+            android:enabled="false"
+            android:hint="Title"/>
+
 
         <EditText
-            android:id="@+id/writeEditText"
+            android:id="@+id/editEditText"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/edit_text"
-            app:layout_constraintTop_toBottomOf="@id/writeTitle"
+            app:layout_constraintTop_toBottomOf="@id/editArchiveTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:gravity="top|start"
+            android:enabled="false"
             android:hint="Tap Edit Icon to write...."
             android:padding="15dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

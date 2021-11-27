@@ -1,44 +1,30 @@
 package com.example.m_notes.ui
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.example.m_notes.R
-import com.example.m_notes.databinding.FragmentSplashScreenBinding
+import com.example.m_notes.databinding.FragmentReminderReadEditBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SplashScreen : Fragment() {
-    private var _binding: FragmentSplashScreenBinding? = null
+class ReminderReadEdit : Fragment() {
+    private var _binding: FragmentReminderReadEditBinding? = null
     private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentSplashScreenBinding.inflate(inflater, container, false)
+        _binding = FragmentReminderReadEditBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
-
-    private fun navigate(){
-        val handler = Handler(Looper.getMainLooper())
-        handler.postDelayed({
-            findNavController().navigate(R.id.action_splashScreen_to_onboardingOne)
-        }, 2000)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        navigate()
     }
 
     override fun onDestroyView() {

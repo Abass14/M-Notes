@@ -12,8 +12,11 @@ interface HomeNotesDao {
     @Query("SELECT * FROM HomeNoteTable")
     fun getHomeNotes() : LiveData<MutableList<HomeNoteModel>>
 
-    @Delete
-    suspend fun deleteHomeNote(notes: HomeNoteModel)
+    @Query("SELECT * FROM HomeNoteTable WHERE id=:id")
+    fun getHomeNotesById(id: Int) : LiveData<HomeNoteModel>
+
+    @Query("DELETE FROM HomeNoteTable WHERE id=:id")
+    suspend fun deleteHomeNote(id: Int)
 
     @Query("UPDATE HomeNoteTable SET title=:title, note=:note, date=:date WHERE id=:id")
     suspend fun updateHomeNote(title: String, note: String, date: String, id:Int)

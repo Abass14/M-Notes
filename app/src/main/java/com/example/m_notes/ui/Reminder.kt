@@ -11,9 +11,11 @@ import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.example.m_notes.R
 import com.example.m_notes.databinding.FragmentReminderBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*
 
+@AndroidEntryPoint
 class Reminder : Fragment() {
     private var _binding: FragmentReminderBinding? = null
     private val binding get() = _binding!!

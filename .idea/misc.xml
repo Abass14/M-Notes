@@ -21,13 +21,16 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/exit_dialog_layout.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_archive.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/fragment_archive_read_edit.xml" value="0.28125" />
         <entry key="app/src/main/res/layout/fragment_date_picker.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/fragment_home_read_edit.xml" value="0.28125" />
         <entry key="app/src/main/res/layout/fragment_onboarding_one.xml" value="0.21" />
         <entry key="app/src/main/res/layout/fragment_onboarding_three.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_onboarding_two.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_reminder.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/fragment_reminder_read_edit.xml" value="0.28125" />
         <entry key="app/src/main/res/layout/fragment_splash_screen.xml" value="0.21" />
         <entry key="app/src/main/res/layout/fragment_write.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_write_archive.xml" value="0.28125" />
