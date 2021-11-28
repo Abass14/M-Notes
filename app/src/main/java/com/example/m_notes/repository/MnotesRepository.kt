@@ -7,7 +7,7 @@ import com.example.m_notes.model.ReminderModel
 
 interface MnotesRepository {
     suspend fun insertHomeNotes (notes: HomeNoteModel)
-    fun getHomeNotes () : LiveData<MutableList<HomeNoteModel>>
+    val getHomeNotes: LiveData<List<HomeNoteModel>>
     suspend fun deleteHomeNotes (id: Int)
     suspend fun updateHomeNotes (title: String, note: String, date: String, id:Int)
     fun getHomeNotesById (id: Int) : LiveData<HomeNoteModel>

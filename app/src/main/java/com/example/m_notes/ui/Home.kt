@@ -7,17 +7,30 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.m_notes.R
+import com.example.m_notes.adapter.NotesRecyclerViewAdapter
 import com.example.m_notes.databinding.FragmentHomeBinding
+import com.example.m_notes.model.HomeNoteModel
+import com.example.m_notes.utils.NoteClickListener
+import com.example.m_notes.utils.NoteLongClickListener
+import com.example.m_notes.viewmodel.ApplicationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class Home : Fragment() {
+class Home : Fragment(), NoteClickListener, NoteLongClickListener {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private var exitDialog: AlertDialog? = null
+    private val viewModel: ApplicationViewModel by viewModels()
+    private lateinit var homeNotesAdapter: NotesRecyclerViewAdapter
+    private lateinit var noteList: List<HomeNoteModel>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,7 +42,11 @@ class Home : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        homeNotesAdapter = NotesRecyclerViewAdapter(this, this)
+        noteList = listOf()
         clickListeners()
+        setRecyclerView()
+        observeAllNotes()
         onBackPressed()
     }
 
@@ -59,6 +76,33 @@ class Home : Fragment() {
         exitDialog?.show()
     }
 
+    private fun setRecyclerView() {
+        binding.homeRecyclerview.apply {
+            adapter = homeNotesAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+
+    private fun screenDisplay(){
+        if (homeNotesAdapter.notesList.isNotEmpty()){
+            binding.homeRecyclerviewLayout.visibility = View.VISIBLE
+            binding.homeEmptyScreen.visibility = View.GONE
+        }
+    }
+
+    private fun observeAllNotes() {
+        viewModel.allNotesLiveData.observe(viewLifecycleOwner, Observer {
+            if (it != null){
+                homeNotesAdapter.setNoteList(it)
+                screenDisplay()
+                noteList = it
+                Toast.makeText(requireContext(), "not empty", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(requireContext(), "is empty", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 
     private fun onBackPressed(){
         //Overriding onBack press to finish activity and exit app
@@ -73,5 +117,15 @@ class Home : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onClick(position: Int) {
+        val note = noteList[position]
+            val action = HomeDirections.actionHome2ToHomeReadEdit(note.id)
+            findNavController().navigate(action)
+    }
+
+    override fun onLongClick(position: Int) {
+        Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
     }
 }

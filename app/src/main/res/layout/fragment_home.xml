@@ -23,7 +23,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="visible">
                 <ImageView
                     android:id="@+id/homeAddNotesLogo"
                     android:layout_width="200dp"
@@ -46,6 +47,7 @@
                     android:textColor="@color/black"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/homeRecyclerviewLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,9 +61,9 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginHorizontal="20dp"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="70dp"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:listitem="@layout/home_notes_layout"
                     app:layout_constraintBottom_toBottomOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>

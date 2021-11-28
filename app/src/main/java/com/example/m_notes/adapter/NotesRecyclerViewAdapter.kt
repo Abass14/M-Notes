@@ -15,7 +15,7 @@ class NotesRecyclerViewAdapter(
     val notesClickListener: NoteClickListener,
     val notesLongClickListener: NoteLongClickListener
     ) : RecyclerView.Adapter<NotesRecyclerViewAdapter.NotesViewHolder>() {
-    var notesList: MutableList<HomeNoteModel> = mutableListOf()
+    var notesList: List<HomeNoteModel> = mutableListOf()
 
     class NotesViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val title = view.findViewById<TextView>(R.id.homeNotesTitle)
@@ -49,7 +49,7 @@ class NotesRecyclerViewAdapter(
         return notesList.size
     }
 
-    fun setNoteList (homeNoteList: MutableList<HomeNoteModel>){
+    fun setNoteList (homeNoteList: List<HomeNoteModel>){
         notesList = homeNoteList
         notifyDataSetChanged()
     }

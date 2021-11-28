@@ -69,6 +69,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
             android:paddingHorizontal="15dp"
+            android:allowClickWhenDisabled="true"
             android:enabled="false"/>
 
         <EditText
@@ -84,6 +85,7 @@
             android:layout_marginBottom="20dp"
             android:gravity="top|start"
             android:enabled="false"
+            android:allowClickWhenDisabled="true"
             android:hint="Tap Edit Icon to write...."
             android:padding="15dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

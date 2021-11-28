@@ -9,8 +9,8 @@ interface HomeNotesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNotes(note: HomeNoteModel)
 
-    @Query("SELECT * FROM HomeNoteTable")
-    fun getHomeNotes() : LiveData<MutableList<HomeNoteModel>>
+    @Query("SELECT * FROM HomeNoteTable ORDER BY id ASC")
+    fun getHomeNotes() : LiveData<List<HomeNoteModel>>
 
     @Query("SELECT * FROM HomeNoteTable WHERE id=:id")
     fun getHomeNotesById(id: Int) : LiveData<HomeNoteModel>

@@ -23,9 +23,8 @@ class NotesRepository @Inject constructor(
         }
     }
 
-    override fun getHomeNotes(): LiveData<MutableList<HomeNoteModel>> {
-        return homeNotesDao.getHomeNotes()
-    }
+    override val getHomeNotes: LiveData<List<HomeNoteModel>> = homeNotesDao.getHomeNotes()
+
 
     override suspend fun deleteHomeNotes(id: Int) {
         try {

@@ -1,5 +1,6 @@
 package com.example.m_notes.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,14 +17,14 @@ import javax.inject.Inject
 @HiltViewModel
 class ApplicationViewModel @Inject constructor(private val mnotesRepository: MnotesRepository) : ViewModel() {
 
-    private val _allNotesLiveData: MutableLiveData<MutableList<HomeNoteModel>> = MutableLiveData()
-    val allNotesLiveData: LiveData<MutableList<HomeNoteModel>> = _allNotesLiveData
+    private var _allNotesLiveData: MutableLiveData<MutableList<HomeNoteModel>> = MutableLiveData()
+    val allNotesLiveData: LiveData<List<HomeNoteModel>> = mnotesRepository.getHomeNotes
 
     private val _noteByIdLiveData: MutableLiveData<HomeNoteModel> = MutableLiveData()
-    val noteByIdLiveData: LiveData<HomeNoteModel> = _noteByIdLiveData
+    var noteByIdLiveData: LiveData<HomeNoteModel>? = null
 
-    private val _allArchivedNoteLiveData: MutableLiveData<MutableList<ArchiveModel>> = MutableLiveData()
-    val allArchivedNoteLiveData: LiveData<MutableList<ArchiveModel>> = _allArchivedNoteLiveData
+    private val _allArchivedNoteLiveData: MutableLiveData<List<ArchiveModel>> = MutableLiveData()
+//    val allArchivedNoteLiveData: LiveData<MutableList<ArchiveModel>> = _allArchivedNoteLiveData
 
     private val _archivedNoteByIdLiveData: MutableLiveData<ArchiveModel> = MutableLiveData()
     val archivedNoteByIdLiveData: LiveData<ArchiveModel> = _archivedNoteByIdLiveData
@@ -34,16 +35,18 @@ class ApplicationViewModel @Inject constructor(private val mnotesRepository: Mno
     private val _reminderById: MutableLiveData<ReminderModel> = MutableLiveData()
     val reminderByIdLiveData: LiveData<ReminderModel> = _reminderById
 
-    fun getAllHomeNotes () {
-        viewModelScope.launch {
-            try {
-               val response = mnotesRepository.getHomeNotes()
-                _allNotesLiveData.value = response.value
-            }catch (e: Exception){
-                e.printStackTrace()
-            }
-        }
-    }
+//    fun getAllHomeNotes () {
+//        viewModelScope.launch {
+//            try {
+//               val response = mnotesRepository.getHomeNotes
+//                allNotesLiveData = response
+//                Log.d("AppViewModel", _allNotesLiveData.value.toString())
+//            }catch (e: Exception){
+//                e.printStackTrace()
+//                Log.d("AppViewModel", "failed")
+//            }
+//        }
+//    }
 
     fun insertHomeNotes (title: String, note: String, date: String) {
         val homeNote = HomeNoteModel(0, title, note, date)
@@ -60,9 +63,11 @@ class ApplicationViewModel @Inject constructor(private val mnotesRepository: Mno
         viewModelScope.launch {
             try {
                 val response = mnotesRepository.getHomeNotesById(id)
-                _noteByIdLiveData.value = response.value
+                noteByIdLiveData = response
+                Log.d("AppViewModel: Item", "Success")
             }catch (e: Exception){
                 e.printStackTrace()
+                Log.d("AppViewModel: Item", "Failed")
             }
         }
     }
