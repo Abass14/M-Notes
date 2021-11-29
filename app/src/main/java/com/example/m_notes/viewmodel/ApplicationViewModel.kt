@@ -24,29 +24,16 @@ class ApplicationViewModel @Inject constructor(private val mnotesRepository: Mno
     var noteByIdLiveData: LiveData<HomeNoteModel>? = null
 
     private val _allArchivedNoteLiveData: MutableLiveData<List<ArchiveModel>> = MutableLiveData()
-//    val allArchivedNoteLiveData: LiveData<MutableList<ArchiveModel>> = _allArchivedNoteLiveData
+    val allArchivedNoteLiveData: LiveData<List<ArchiveModel>> = mnotesRepository.getAllArchivedNotes
 
     private val _archivedNoteByIdLiveData: MutableLiveData<ArchiveModel> = MutableLiveData()
-    val archivedNoteByIdLiveData: LiveData<ArchiveModel> = _archivedNoteByIdLiveData
+    var archivedNoteByIdLiveData: LiveData<ArchiveModel>? = null
 
     private val _allReminderLiveData: MutableLiveData<MutableList<ReminderModel>> = MutableLiveData()
     val allReminderLiveData: LiveData<MutableList<ReminderModel>> = _allReminderLiveData
 
     private val _reminderById: MutableLiveData<ReminderModel> = MutableLiveData()
     val reminderByIdLiveData: LiveData<ReminderModel> = _reminderById
-
-//    fun getAllHomeNotes () {
-//        viewModelScope.launch {
-//            try {
-//               val response = mnotesRepository.getHomeNotes
-//                allNotesLiveData = response
-//                Log.d("AppViewModel", _allNotesLiveData.value.toString())
-//            }catch (e: Exception){
-//                e.printStackTrace()
-//                Log.d("AppViewModel", "failed")
-//            }
-//        }
-//    }
 
     fun insertHomeNotes (title: String, note: String, date: String) {
         val homeNote = HomeNoteModel(0, title, note, date)
@@ -86,6 +73,52 @@ class ApplicationViewModel @Inject constructor(private val mnotesRepository: Mno
         viewModelScope.launch(Dispatchers.IO){
             try {
                 mnotesRepository.updateHomeNotes(title, note, date, id)
+                Log.d("AppViewModel: Update", "sUCCESS")
+            }catch (e: Exception){
+                e.printStackTrace()
+                Log.d("AppViewModel: Update", "Failed")
+            }
+        }
+    }
+
+    fun insertArchivedNotes (title: String, note: String, date: String) {
+        val archivedNote = ArchiveModel(0, title, note, date)
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                mnotesRepository.insertArchivedNotes(archivedNote)
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun updateArchivedNote (title: String, note: String, date: String, id: Int) {
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                mnotesRepository.updateArchivedNote(title, note, date, id)
+                Log.d("AppViewModel", "Success")
+            }catch (e: Exception){
+                e.printStackTrace()
+                Log.d("AppViewModel", "Failed")
+            }
+        }
+    }
+
+    fun deleteArchivedNote (id: Int) {
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                mnotesRepository.deleteArchivedNote(id)
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun getArchivedNoteById(id: Int) {
+        viewModelScope.launch {
+            try {
+                val response = mnotesRepository.getArchivedNoteById(id)
+                archivedNoteByIdLiveData = response
             }catch (e: Exception){
                 e.printStackTrace()
             }

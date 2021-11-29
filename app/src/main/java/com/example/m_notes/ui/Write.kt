@@ -10,6 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.m_notes.R
 import com.example.m_notes.databinding.FragmentWriteBinding
+import com.example.m_notes.utils.CurrentDate
+import com.example.m_notes.utils.Dialog
+import com.example.m_notes.utils.Validations
 import com.example.m_notes.viewmodel.ApplicationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -42,14 +45,14 @@ class Write : Fragment() {
         binding.writeSave.setOnClickListener {
             val title = binding.writeTitle.text.toString()
             val note = binding.writeEditText.text.toString()
-            val calender = Calendar.getInstance()
-            val year = calender.get(Calendar.YEAR)
-            val month = calender.get(Calendar.MONTH)
-            val day = calender.get(Calendar.DAY_OF_MONTH)
-            val date = "$day-$month-$year"
-            insertNotes(title, note, date)
-            Toast.makeText(requireContext(), "Notes Saved Successfully", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_write_to_home2)
+            val date = CurrentDate.getCurrentDate()
+            if (Validations.validateInsertNote(title, note)){
+                insertNotes(title, note, date)
+                Dialog.toastMsg(requireContext(), "Notes Saved Successfully")
+                findNavController().navigate(R.id.action_write_to_home2)
+            }else{
+                binding.homeWriteErrorTxt.text = getString(R.string.write_error_msg)
+            }
         }
     }
 

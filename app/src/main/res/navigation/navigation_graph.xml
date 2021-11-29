@@ -115,6 +115,10 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/splashScreen"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashScreen_to_home2"
+            app:destination="@id/home2"
+            app:enterAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/write"
@@ -162,6 +166,9 @@
             app:destination="@id/archive"
             app:popUpTo="@id/archiveReadEdit"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/homeReadEdit"

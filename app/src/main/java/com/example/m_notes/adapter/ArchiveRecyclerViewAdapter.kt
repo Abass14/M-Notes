@@ -14,7 +14,7 @@ class ArchiveRecyclerViewAdapter(
     val archiveClickListener: NoteClickListener,
     val archiveLongClickListener: NoteLongClickListener
 ) : RecyclerView.Adapter<ArchiveRecyclerViewAdapter.ArchiveViewHolder>() {
-    var archiveList: MutableList<ArchiveModel> = mutableListOf()
+    var archiveList: List<ArchiveModel> = mutableListOf()
 
     class ArchiveViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val title = view.findViewById<TextView>(R.id.homeNotesTitle)
@@ -48,7 +48,7 @@ class ArchiveRecyclerViewAdapter(
         return archiveList.size
     }
 
-    fun setArchiveNotes(noteList: MutableList<ArchiveModel>) {
+    fun setArchiveNotes(noteList: List<ArchiveModel>) {
         archiveList = noteList
         notifyDataSetChanged()
     }

@@ -9,10 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.m_notes.R
 import com.example.m_notes.databinding.FragmentHomeReadEditBinding
 import com.example.m_notes.model.HomeNoteModel
+import com.example.m_notes.utils.CurrentDate
+import com.example.m_notes.utils.Dialog
 import com.example.m_notes.viewmodel.ApplicationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,9 +39,37 @@ class HomeReadEdit : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val noteId = args.id
+
         getNote(noteId)
         getNoteDetails()
+        clickListeners()
     }
+
+    private fun clickListeners () {
+        binding.editHomeEdit.setOnClickListener {
+            binding.editHomeEditText.isEnabled = true
+            binding.editHomeTitle.isEnabled = true
+        }
+        binding.editHomeClear.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        binding.editHomeSave.setOnClickListener {
+            val currentDate = CurrentDate.getCurrentDate()
+            if (binding.editHomeTitle.isEnabled) {
+                updateNote(
+                    binding.editHomeTitle.text.toString(),
+                    binding.editHomeEditText.text.toString(),
+                    currentDate,
+                    args.id
+                )
+                findNavController().popBackStack()
+                Dialog.toastMsg(requireContext(), "Note Updated Successfully")
+            }else{
+                binding.homeReadEditErrorTxt.text = getString(R.string.note_update_error)
+            }
+        }
+    }
+
 
     private fun getNote(id: Int){
         viewModel.getNoteById(id)
@@ -48,17 +79,18 @@ class HomeReadEdit : Fragment() {
         viewModel.noteByIdLiveData?.observe(viewLifecycleOwner, Observer {
             if (it != null){
                 note = it
-                var title = binding.editHomeTitle
-                val noteItem = binding.editHomeEditText
                 binding.editHomeTitle.setText(it.title)
                 binding.editHomeEditText.setText(it.note)
                 Log.d("AppViewModel: String", it.note)
             }else{
                 Log.d("AppViewModel: String2", "failing")
-                Toast.makeText(requireContext(), "null", Toast.LENGTH_SHORT).show()
             }
         })
 
+    }
+
+    private fun updateNote(title: String, note: String, date: String, id: Int) {
+        viewModel.updateNote(title, note, date, id)
     }
 
     override fun onDestroyView() {

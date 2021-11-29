@@ -54,9 +54,7 @@ class NotesRepository @Inject constructor(
         }
     }
 
-    override fun getArchivedNotes(): LiveData<MutableList<ArchiveModel>> {
-        return archiveDao.getArchivedNotes()
-    }
+    override val getAllArchivedNotes: LiveData<List<ArchiveModel>> =  archiveDao.getArchivedNotes()
 
     override suspend fun deleteArchivedNote(id: Int) {
         try {

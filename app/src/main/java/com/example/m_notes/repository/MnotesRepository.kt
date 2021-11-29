@@ -13,7 +13,7 @@ interface MnotesRepository {
     fun getHomeNotesById (id: Int) : LiveData<HomeNoteModel>
 
     suspend fun insertArchivedNotes (notes: ArchiveModel)
-    fun getArchivedNotes () : LiveData<MutableList<ArchiveModel>>
+    val getAllArchivedNotes : LiveData<List<ArchiveModel>>
     suspend fun deleteArchivedNote (id: Int)
     suspend fun updateArchivedNote (title: String, note: String, date: String, id:Int)
     fun getArchivedNoteById (id: Int) : LiveData<ArchiveModel>

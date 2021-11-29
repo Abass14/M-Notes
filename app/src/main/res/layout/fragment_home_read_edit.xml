@@ -57,6 +57,16 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
+        <TextView
+            android:id="@+id/homeReadEditErrorTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red_medium"
+            app:layout_constraintStart_toStartOf="@id/editHomeTitle"
+            app:layout_constraintEnd_toEndOf="@id/editHomeTitle"
+            app:layout_constraintTop_toBottomOf="@id/editHomeToolbar"/>
+
+
         <EditText
             android:id="@+id/editHomeTitle"
             android:layout_width="0dp"

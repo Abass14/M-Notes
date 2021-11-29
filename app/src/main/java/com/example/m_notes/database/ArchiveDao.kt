@@ -11,7 +11,7 @@ interface ArchiveDao {
     suspend fun insertArchivedNotes(note: ArchiveModel)
 
     @Query("SELECT * FROM ArchiveTable")
-    fun getArchivedNotes() : LiveData<MutableList<ArchiveModel>>
+    fun getArchivedNotes() : LiveData<List<ArchiveModel>>
 
     @Query("SELECT * FROM ArchiveTable WHERE id=:id")
     fun getArchivedNotesById(id: Int) : LiveData<ArchiveModel>
