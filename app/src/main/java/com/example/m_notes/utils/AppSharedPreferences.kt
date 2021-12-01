@@ -10,6 +10,7 @@ object AppSharedPreferences {
     const val SPLASH_KEY = "Slash key"
     const val SET_PASSWORD_KEY = "Set Password key"
     const val INPUT_PASSWORD_KEY = "Input password key"
+    const val REMINDER_CHECK_KEY = "Reminder check key"
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -36,6 +37,13 @@ object AppSharedPreferences {
     }
     fun getInputPasswordPref(key: String) : Int{
         return sharedPreferences.getInt(key, 0)
+    }
+
+    fun setReminderSwitchPref(isChecked: Boolean){
+        sharedPreferences.edit().putBoolean(REMINDER_CHECK_KEY, isChecked).apply()
+    }
+    fun getReminderSwitchPref(key: String): Boolean{
+        return sharedPreferences.getBoolean(key, false)
     }
 
 }

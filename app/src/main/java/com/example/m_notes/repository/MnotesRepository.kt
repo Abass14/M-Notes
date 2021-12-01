@@ -19,8 +19,9 @@ interface MnotesRepository {
     fun getArchivedNoteById (id: Int) : LiveData<ArchiveModel>
 
     suspend fun insertReminder (reminder: ReminderModel)
-    fun getReminders () : LiveData<MutableList<ReminderModel>>
+    val getReminders : LiveData<List<ReminderModel>>
     suspend fun deleteReminder (id: Int)
-    suspend fun updateReminder (date: String, time: String, note: String, id:Int)
+    suspend fun updateReminder (year: Int, month: Int, day: Int, hour: Int, minute: Int, date: String, time: String, note: String, id:Int, isSet: Boolean)
+    suspend fun updateIsSetReminder(isSet: Boolean, id: Int)
     fun getReminderById (id: Int) : LiveData<ReminderModel>
 }

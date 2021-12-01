@@ -1,29 +1,41 @@
 package com.example.m_notes.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.m_notes.R
 import com.example.m_notes.model.ReminderModel
+import com.example.m_notes.utils.AppSharedPreferences
+import com.example.m_notes.utils.NoteClickListener
 import com.example.m_notes.utils.NoteLongClickListener
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class ReminderRecyclerViewAdapter(
-    val reminderLongClickListener: NoteLongClickListener
+    val reminderLongClickListener: NoteLongClickListener,
+    val reminderClickListener: NoteClickListener,
+    val reminderSwitchListener: ReminderSwitchListener
 ) : RecyclerView.Adapter<ReminderRecyclerViewAdapter.ReminderViewHolder>() {
-    val reminderList: MutableList<ReminderModel> = mutableListOf()
+    var reminderList: List<ReminderModel> = mutableListOf()
 
     class ReminderViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val date: TextView = view.findViewById(R.id.reminderDate)
         val time: TextView = view.findViewById(R.id.reminderTime)
         val reminders: TextView = view.findViewById(R.id.reminderTitle)
+        val switch = view.findViewById<SwitchMaterial>(R.id.setReminder)
 
         fun bind(reminder: ReminderModel){
             date.text = reminder.date
             time.text = reminder.time
             reminders.text = reminder.note
         }
+    }
+
+    interface ReminderSwitchListener{
+        fun onSwitch(position: Int, isChecked: Boolean)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReminderViewHolder {
@@ -38,9 +50,25 @@ class ReminderRecyclerViewAdapter(
             reminderLongClickListener.onLongClick(position)
             return@setOnLongClickListener true
         }
+
+        holder.itemView.setOnClickListener {
+            reminderClickListener.onClick(position)
+        }
+
+        holder.switch.isChecked = reminderList[position].isSet
+
+        holder.switch.setOnCheckedChangeListener { compoundButton, b ->
+            reminderSwitchListener.onSwitch(position, compoundButton.isChecked)
+            Log.d("AppViewModel: Switch", "${compoundButton.isChecked}")
+        }
     }
 
     override fun getItemCount(): Int {
         return reminderList.size
+    }
+
+    fun setRemList (remList: List<ReminderModel>) {
+        reminderList = remList
+        notifyDataSetChanged()
     }
 }

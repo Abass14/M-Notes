@@ -84,9 +84,7 @@ class NotesRepository @Inject constructor(
         }
     }
 
-    override fun getReminders(): LiveData<MutableList<ReminderModel>> {
-        return reminderDao.getReminders()
-    }
+    override val getReminders : LiveData<List<ReminderModel>> = reminderDao.getReminders()
 
     override suspend fun deleteReminder(id: Int) {
         try {
@@ -96,9 +94,19 @@ class NotesRepository @Inject constructor(
         }
     }
 
-    override suspend fun updateReminder(date: String, time: String, note: String, id: Int) {
+    override suspend fun updateReminder(year: Int, month: Int,
+                                        day: Int, hour: Int, minute: Int,
+                                        date: String, time: String, note: String, id:Int, isSet: Boolean) {
         try {
-            reminderDao.updateReminder(date, time, note, id)
+            reminderDao.updateReminder(year, month, day, hour, minute, date, time, note, id, isSet)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
+    override suspend fun updateIsSetReminder(isSet: Boolean, id: Int) {
+        try {
+            reminderDao.updateIsSetReminder(isSet, id)
         }catch (e: Exception){
             e.printStackTrace()
         }

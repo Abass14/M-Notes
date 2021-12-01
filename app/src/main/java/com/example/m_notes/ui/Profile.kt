@@ -26,13 +26,14 @@ class Profile : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        onBackPressed()
     }
 
     fun onBackPressed(){
         //Overriding onBack press to finish activity and exit app
         val callback = object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                findNavController().navigate(R.id.action_profile_to_home2)
+                findNavController().popBackStack()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(callback)

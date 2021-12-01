@@ -34,8 +34,7 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_home2_to_reminder"
-            app:destination="@id/reminder"
-            app:popUpToInclusive="false" />
+            app:destination="@id/reminder" />
         <action
             android:id="@+id/action_home2_to_archive"
             app:destination="@id/archive" />

@@ -9,9 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.m_notes.R
 import com.example.m_notes.adapter.ArchiveRecyclerViewAdapter
@@ -59,6 +61,7 @@ class Archive : Fragment(), NoteClickListener, NoteLongClickListener {
         archivedNoteList = listOf()
         setupRecyclerView()
         getArchivedNotes()
+        onBackPressed()
     }
 
     private fun showScreen(){
@@ -74,7 +77,7 @@ class Archive : Fragment(), NoteClickListener, NoteLongClickListener {
     private fun setupRecyclerView(){
         binding.archiveRecyclerview.apply {
             adapter = archivedNotesAdapter
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = GridLayoutManager(requireContext(), 2)
         }
     }
 
@@ -95,9 +98,9 @@ class Archive : Fragment(), NoteClickListener, NoteLongClickListener {
 
     private fun getArchivedNotes() {
         viewModel.allArchivedNoteLiveData.observe(viewLifecycleOwner, Observer {
-            archivedNotesAdapter.setArchiveNotes(it)
+            archivedNotesAdapter.setArchiveNotes(it.reversed())
             showScreen()
-            archivedNoteList = it
+            archivedNoteList = it.reversed()
         })
     }
 
@@ -122,6 +125,16 @@ class Archive : Fragment(), NoteClickListener, NoteLongClickListener {
         }
         inputPasswordDialog?.show()
         inputPasswordDialog?.setCanceledOnTouchOutside(false)
+    }
+
+    private fun onBackPressed(){
+        //Overriding onBack press to finish activity and exit app
+        val callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                findNavController().navigate(R.id.action_archive_to_home2)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     override fun onDestroyView() {

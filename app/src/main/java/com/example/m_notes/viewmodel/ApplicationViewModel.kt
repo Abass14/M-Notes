@@ -30,10 +30,10 @@ class ApplicationViewModel @Inject constructor(private val mnotesRepository: Mno
     var archivedNoteByIdLiveData: LiveData<ArchiveModel>? = null
 
     private val _allReminderLiveData: MutableLiveData<MutableList<ReminderModel>> = MutableLiveData()
-    val allReminderLiveData: LiveData<MutableList<ReminderModel>> = _allReminderLiveData
+    val allReminderLiveData: LiveData<List<ReminderModel>>? = mnotesRepository.getReminders
 
     private val _reminderById: MutableLiveData<ReminderModel> = MutableLiveData()
-    val reminderByIdLiveData: LiveData<ReminderModel> = _reminderById
+    var reminderByIdLiveData: LiveData<ReminderModel>? = null
 
     fun insertHomeNotes (title: String, note: String, date: String) {
         val homeNote = HomeNoteModel(0, title, note, date)
@@ -124,5 +124,63 @@ class ApplicationViewModel @Inject constructor(private val mnotesRepository: Mno
             }
         }
     }
+
+    fun getReminderById(id: Int){
+        viewModelScope.launch {
+            try {
+                val response = mnotesRepository.getReminderById(id)
+                reminderByIdLiveData = response
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun deleteReminder(id: Int){
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                mnotesRepository.deleteReminder(id)
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun insertReminder(year: Int, month: Int,
+                       day: Int, hour: Int, minute: Int,
+                       date: String, time: String, note: String){
+        val reminder = ReminderModel(0, year, month, day, hour, minute, date, time, note, false)
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                mnotesRepository.insertReminder(reminder)
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun updateIsSetReminder(isSet: Boolean, id: Int){
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                mnotesRepository.updateIsSetReminder(isSet, id)
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun updateReminder(year: Int, month: Int,
+                       day: Int, hour: Int, minute: Int,
+                       date: String, time: String, note: String, id:Int, isSet: Boolean){
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                mnotesRepository.updateReminder(year, month, day, hour, minute, date, time, note, id, true)
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+
 
 }

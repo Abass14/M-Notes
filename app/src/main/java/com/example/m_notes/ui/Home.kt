@@ -2,17 +2,23 @@ package com.example.m_notes.ui
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.m_notes.R
 import com.example.m_notes.adapter.GuideViewPagerAdapter
@@ -20,10 +26,7 @@ import com.example.m_notes.adapter.NotesRecyclerViewAdapter
 import com.example.m_notes.databinding.FragmentHomeBinding
 import com.example.m_notes.model.GuideModel
 import com.example.m_notes.model.HomeNoteModel
-import com.example.m_notes.utils.AppSharedPreferences
-import com.example.m_notes.utils.Dialog
-import com.example.m_notes.utils.NoteClickListener
-import com.example.m_notes.utils.NoteLongClickListener
+import com.example.m_notes.utils.*
 import com.example.m_notes.viewmodel.ApplicationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,6 +41,7 @@ class Home : Fragment(), NoteClickListener, NoteLongClickListener {
     private lateinit var noteList: List<HomeNoteModel>
     private var deleteDialog: MaterialAlertDialogBuilder? = null
     private lateinit var guideViewPagerAdapter: GuideViewPagerAdapter
+    private var permissionDialog: MaterialAlertDialogBuilder? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +49,7 @@ class Home : Fragment(), NoteClickListener, NoteLongClickListener {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        requestPermission()
         return binding.root
     }
 
@@ -92,7 +97,7 @@ class Home : Fragment(), NoteClickListener, NoteLongClickListener {
     private fun setRecyclerView() {
         binding.homeRecyclerview.apply {
             adapter = homeNotesAdapter
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = GridLayoutManager(requireContext(), 2)
         }
     }
 
@@ -109,9 +114,9 @@ class Home : Fragment(), NoteClickListener, NoteLongClickListener {
     private fun observeAllNotes() {
         viewModel.allNotesLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null){
-                homeNotesAdapter.setNoteList(it)
+                homeNotesAdapter.setNoteList(it.reversed())
                 screenDisplay()
-                noteList = it
+                noteList = it.reversed()
             }else{
                 Toast.makeText(requireContext(), "is empty", Toast.LENGTH_SHORT).show()
             }
@@ -135,6 +140,41 @@ class Home : Fragment(), NoteClickListener, NoteLongClickListener {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
+
+    private fun requestPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(requireActivity(), PERMISSION_ARRAY, REQUEST_CODE)
+        }
+    }
+
+    private fun showPermissionDialog(){
+        val taskPositive: DialogInterface.OnClickListener = DialogInterface.OnClickListener { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+        Dialog.alertDialog(permissionDialog, requireActivity(), requireContext(), "Permission Granted!", "Press OK to continue", "OK", "",
+            null, null, R.style.RoundShapeTheme, taskPositive, taskPositive)
+    }
+
+    private fun deniedPermissionDialog(){
+        val taskPositive: DialogInterface.OnClickListener = DialogInterface.OnClickListener { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+        Dialog.alertDialog(permissionDialog, requireActivity(), requireContext(), "Permission Denied!", "Press OK to continue", "OK", "",
+            null, null, R.style.RoundShapeTheme, taskPositive, taskPositive)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                showPermissionDialog()
+            }
+        }
     }
 
     override fun onDestroyView() {

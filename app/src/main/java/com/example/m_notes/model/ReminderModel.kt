@@ -7,7 +7,13 @@ import androidx.room.PrimaryKey
 data class ReminderModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
+    val year: Int,
+    val month: Int,
+    val day: Int,
+    val hour: Int,
+    val minute: Int,
     val date: String,
     val time: String,
-    val note: String
+    val note: String,
+    val isSet: Boolean
 )

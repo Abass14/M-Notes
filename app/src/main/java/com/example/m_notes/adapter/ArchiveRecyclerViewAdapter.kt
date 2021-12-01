@@ -9,6 +9,7 @@ import com.example.m_notes.R
 import com.example.m_notes.model.ArchiveModel
 import com.example.m_notes.utils.NoteClickListener
 import com.example.m_notes.utils.NoteLongClickListener
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class ArchiveRecyclerViewAdapter(
     val archiveClickListener: NoteClickListener,
