@@ -26,12 +26,14 @@ class ReminderRecyclerViewAdapter(
         val time: TextView = view.findViewById(R.id.reminderTime)
         val reminders: TextView = view.findViewById(R.id.reminderTitle)
         val switch = view.findViewById<SwitchMaterial>(R.id.setReminder)
+        val reminderType = view.findViewById<TextView>(R.id.setReminderType)
 
         fun bind(reminder: ReminderModel){
             date.text = reminder.date
             time.text = reminder.time
             reminders.text = reminder.note
             switch.isChecked = reminder.isSet
+            reminderType.text = reminder.reminderType
         }
     }
 

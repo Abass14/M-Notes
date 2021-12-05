@@ -9,4 +9,10 @@
     <string name="password_archive_note">Would you like to set a password for your Archived Notes?</string>
     <string name="write_error_msg">Title and Note Fields can\'t be empty!! Press OK to continue</string>
     <string name="note_update_error">You have made no updates to Note!! Press OK to continue</string>
+    <string name="daily">Daily</string>
+    <string name="one_time">One-time</string>
+    <string-array name="reminder_type">
+        <item>Daily</item>
+        <item>One-time</item>
+    </string-array>
 </resources>

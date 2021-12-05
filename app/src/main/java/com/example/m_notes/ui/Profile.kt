@@ -29,11 +29,15 @@ class Profile : Fragment() {
         onBackPressed()
     }
 
-    fun onBackPressed(){
+    override fun onResume() {
+        super.onResume()
+        onBackPressed()
+    }
+    private fun onBackPressed(){
         //Overriding onBack press to finish activity and exit app
         val callback = object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                findNavController().popBackStack()
+                findNavController().navigate(R.id.action_profile_to_home2)
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(callback)

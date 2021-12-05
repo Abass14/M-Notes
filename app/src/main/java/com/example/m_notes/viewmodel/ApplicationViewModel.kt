@@ -148,8 +148,8 @@ class ApplicationViewModel @Inject constructor(private val mnotesRepository: Mno
 
     fun insertReminder(year: Int, month: Int,
                        day: Int, hour: Int, minute: Int,
-                       date: String, time: String, note: String){
-        val reminder = ReminderModel(0, year, month, day, hour, minute, date, time, note, false, 0)
+                       date: String, time: String, note: String, reminderType: String){
+        val reminder = ReminderModel(0, year, month, day, hour, minute, date, time, note, false, 0, reminderType)
         viewModelScope.launch(Dispatchers.IO){
             try {
                 mnotesRepository.insertReminder(reminder)
@@ -181,10 +181,10 @@ class ApplicationViewModel @Inject constructor(private val mnotesRepository: Mno
 
     fun updateReminder(year: Int, month: Int,
                        day: Int, hour: Int, minute: Int,
-                       date: String, time: String, note: String, id:Int, isSet: Boolean, showDialog: Int){
+                       date: String, time: String, note: String, id:Int, isSet: Boolean, showDialog: Int, reminderType: String){
         viewModelScope.launch(Dispatchers.IO){
             try {
-                mnotesRepository.updateReminder(year, month, day, hour, minute, date, time, note, id, true, showDialog)
+                mnotesRepository.updateReminder(year, month, day, hour, minute, date, time, note, id, true, showDialog, reminderType)
             }catch (e: Exception){
                 e.printStackTrace()
             }

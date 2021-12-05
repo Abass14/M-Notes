@@ -96,9 +96,9 @@ class NotesRepository @Inject constructor(
 
     override suspend fun updateReminder(year: Int, month: Int,
                                         day: Int, hour: Int, minute: Int,
-                                        date: String, time: String, note: String, id:Int, isSet: Boolean, showDialog: Int) {
+                                        date: String, time: String, note: String, id:Int, isSet: Boolean, showDialog: Int, reminderType: String) {
         try {
-            reminderDao.updateReminder(year, month, day, hour, minute, date, time, note, id, isSet, showDialog)
+            reminderDao.updateReminder(year, month, day, hour, minute, date, time, note, id, isSet, showDialog, reminderType)
         }catch (e: Exception){
             e.printStackTrace()
         }

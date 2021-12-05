@@ -189,8 +189,7 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
             reminder.day, reminder.hour, reminder.minute)
         alarmManager!![position] = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            if (reminder.year >= CurrentDate.year && reminder.day >= CurrentDate.day
-                && reminder.month >= CurrentDate.month) {
+            if (reminder.year >= CurrentDate.year) {
                 alarmManager!![position]?.setInexactRepeating(
                     AlarmManager.RTC,
                     calender.timeInMillis,
@@ -203,8 +202,7 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
                 Dialog.toastMsg(requireContext(), "Reminder can't be set on Invalid Date")
             }
         }else{
-            if (reminder.year >= CurrentDate.year && reminder.day >= CurrentDate.day
-                && reminder.month >= CurrentDate.month) {
+            if (reminder.year >= CurrentDate.year) {
                 alarmManager!![position]?.setInexactRepeating(
                     AlarmManager.RTC,
                     calender.timeInMillis,
@@ -288,20 +286,6 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun showReminderOptionDialog(position: Int){
-        val positiveTask = DialogInterface.OnClickListener { dialogInterface, i ->
-            setAlarm(position)
-        }
-        val negativeTask = DialogInterface.OnClickListener { dialogInterface, i ->
-            setRepeatingAlarm(position)
-        }
-        Dialog.alertDialog(deleteDialog, requireActivity(), requireContext(), "Select Reminder Type",
-            "Select ONE TIME for one time Reminder and DAILY for Daily Reminder",
-            "ONE-TIME", "DAILY", null, null,
-            R.style.RoundShapeTheme, positiveTask, negativeTask)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onSwitch(position: Int, isChecked: Boolean) {
         val reminder = reminderList[position]
         if (!isChecked) {
@@ -312,14 +296,16 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
             }else{
                 Dialog.toastMsg(requireContext(), "cancelled")
             }
-            Dialog.toastMsg(requireContext(), "FIRST -> isChecked: ${isChecked} isSet -> ${reminder.isSet} $position ")
         }
         else{
             //TRUE -> SET ALARM HERE
             updateShowDialog(1, reminder.id)
             updateIsSetReminder(true, reminder.id)
-            showReminderOptionDialog(position)
-            Dialog.toastMsg(requireContext(), "SECOND -> isChecked: ${isChecked} isSet -> ${reminder.isSet} $position")
+            if (reminder.reminderType == "Daily"){
+                setRepeatingAlarm(position)
+            }else if(reminder.reminderType == "One-time"){
+                setAlarm(position)
+            }
         }
     }
 

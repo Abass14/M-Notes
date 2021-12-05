@@ -12,6 +12,7 @@ object AppSharedPreferences {
     const val INPUT_PASSWORD_KEY = "Input password key"
     const val REMINDER_CHECK_KEY = "Reminder check key"
     const val CANCEL_DIALOG_KEY = "Cancel dialog key"
+    const val PASSWORD_KEY = "Password"
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -54,4 +55,10 @@ object AppSharedPreferences {
         return sharedPreferences.getInt(key, 0)
     }
 
+    fun setPassword(password: String){
+        sharedPreferences.edit().putString(PASSWORD_KEY, password).apply()
+    }
+    fun getPassword(key: String) : String? {
+        return sharedPreferences.getString(key, null)
+    }
 }

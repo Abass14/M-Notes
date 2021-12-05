@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.example.m_notes.databinding.ActivityMainBinding
+import com.example.m_notes.utils.AppSharedPreferences
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -64,6 +65,14 @@ class MainActivity : AppCompatActivity() {
     private fun hideBottomNav(){
         binding.appBottomNav.visibility = View.GONE
         binding.topAppBar.visibility = View.GONE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val passwordPref = AppSharedPreferences.getPasswordPref(AppSharedPreferences.SET_PASSWORD_KEY)
+        if (passwordPref == 3){
+            AppSharedPreferences.setPasswordPref(2)
+        }
     }
 
 }

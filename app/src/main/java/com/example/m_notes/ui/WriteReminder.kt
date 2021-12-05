@@ -16,6 +16,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.icu.util.GregorianCalendar
 import android.os.Build
+import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import com.example.m_notes.R
@@ -50,9 +51,15 @@ class WriteReminder : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        reminderTypeSetUp()
         clickListeners()
     }
 
+    private fun reminderTypeSetUp() {
+        val reminderType = resources.getStringArray(R.array.reminder_type)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, reminderType)
+        binding.reminderAutoCompleteTv.setAdapter(arrayAdapter)
+    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun clickListeners() {
@@ -81,30 +88,173 @@ class WriteReminder : Fragment() {
                     reminderMinute = minute },
                 CurrentDate.hour,
                 CurrentDate.minute,
-                true
+                false
             )
             timePickerDialog.show()
         }
 
         binding.reminderSave.setOnClickListener {
-            if (reminderYear != null && reminderMonth != null && reminderDay != null && reminderHour != null && reminderMinute != null && binding.reminderEditText.text.toString().isNotEmpty()) {
-                if (reminderYear!! >= CurrentDate.year && reminderDay!! >= CurrentDate.day
-                    && reminderMonth!! >= CurrentDate.month
-                ) {
-                    insertReminder(
-                        reminderYear!!, reminderMonth!!,
-                        reminderDay!!, reminderHour!!, reminderMinute!!,
-                        binding.reminderDateTxt.text.toString(),
-                        binding.reminderTimeTxt.text.toString(),
-                        binding.reminderEditText.text.toString()
-                    )
-                    showSuccessDialog()
-                    findNavController().popBackStack()
-                }else{
-                    Dialog.toastMsg(requireContext(), "Invalid Date Selection!!!")
-                }
+            val reminderType = binding.reminderAutoCompleteTv.text
+            if (Validations.validateYear(reminderYear) && Validations.validateMonth(reminderMonth) &&
+                    Validations.validateDay(reminderDay) && Validations.validateHour(reminderHour) &&
+                    Validations.validateMinute(reminderMinute) &&
+                    binding.reminderEditText.text.isNotEmpty()){
+                binding.setDateErrorTxt.text = ""
+                binding.setTimeErrorTxt.text = ""
+                binding.reminderTypeErrorTxt.text = ""
+                        if (reminderType.toString() == "Daily"){
+                            if (Validations.validateDailyReminderDate(reminderYear)){
+                                insertReminder(
+                                    reminderYear!!, reminderMonth!!,
+                                    reminderDay!!, reminderHour!!, reminderMinute!!,
+                                    binding.reminderDateTxt.text.toString(),
+                                    binding.reminderTimeTxt.text.toString(),
+                                    binding.reminderEditText.text.toString(),
+                                    binding.reminderAutoCompleteTv.text.toString()
+                                )
+                                showSuccessDialog()
+                                findNavController().popBackStack()
+                            }else{
+                                if (!Validations.validateDailyReminderDate(reminderYear)){
+                                    binding.setDateErrorTxt.text = "Invalid Year selection"
+                                }
+                            }
+                        }else if(reminderType.toString() == "One-time"){
+                            if (Validations.validateOneTimeReminderDate(reminderYear, reminderMonth, reminderDay) &&
+                                    Validations.validateOneTimeReminderTime(reminderHour, reminderMinute)){
+                                insertReminder(
+                                    reminderYear!!, reminderMonth!!,
+                                    reminderDay!!, reminderHour!!, reminderMinute!!,
+                                    binding.reminderDateTxt.text.toString(),
+                                    binding.reminderTimeTxt.text.toString(),
+                                    binding.reminderEditText.text.toString(),
+                                    binding.reminderAutoCompleteTv.text.toString()
+                                )
+                                showSuccessDialog()
+                                findNavController().popBackStack()
+                            }else{
+                                if (!Validations.validateOneTimeReminderTime(reminderHour, reminderMinute)){
+                                    Dialog.toastMsg(requireContext(), "Invalid Time")
+                                    binding.setTimeErrorTxt.text = "Invalid Time"
+                                }
+                                if (!Validations.validateOneTimeReminderDate(reminderYear, reminderMonth, reminderDay)){
+                                    Dialog.toastMsg(requireContext(), "Invalid Date")
+                                    binding.setDateErrorTxt.text = "Invalid Date"
+                                }
+                            }
+                        }else{
+                            if (!Validations.validateReminderType(reminderType.toString())){
+                                binding.reminderTypeErrorTxt.text = "Select type of reminder!!"
+                            }
+                        }
             }else{
-                Dialog.toastMsg(requireContext(), "Date, Time or Reminder Text Field can't be empty can't be left empty")
+                if (!Validations.validateYear(reminderYear)){
+                    binding.setDateErrorTxt.text = "Date not set!!"
+                }else{
+                    if (reminderType.toString() == "Daily"){
+                        if (!Validations.validateDailyReminderDate(reminderYear)){
+                            binding.setDateErrorTxt.text = "Invalid Year selection"
+                        }
+                    }else if (reminderType.toString() == "One-time"){
+                        if (!Validations.validateOneTimeReminderTime(reminderHour, reminderMinute)){
+                            Dialog.toastMsg(requireContext(), "Invalid Time")
+                            binding.setTimeErrorTxt.text = "Invalid Time"
+                        }
+                        if (!Validations.validateOneTimeReminderDate(reminderYear, reminderMonth, reminderDay)){
+                            Dialog.toastMsg(requireContext(), "Invalid Date")
+                            binding.setDateErrorTxt.text = "Invalid Date"
+                        }
+                    }else{
+                        binding.setDateErrorTxt.text = ""
+                    }
+                }
+                if (!Validations.validateMonth(reminderMonth)){
+                    binding.setDateErrorTxt.text = "Date not set!!"
+                }else{
+                    if (reminderType.toString() == "Daily"){
+                        if (!Validations.validateDailyReminderDate(reminderYear)){
+                            binding.setDateErrorTxt.text = "Invalid Year selection"
+                        }
+                    }else if (reminderType.toString() == "One-time"){
+                        if (!Validations.validateOneTimeReminderTime(reminderHour, reminderMinute)){
+                            Dialog.toastMsg(requireContext(), "Invalid Time")
+                            binding.setTimeErrorTxt.text = "Invalid Time"
+                        }
+                        if (!Validations.validateOneTimeReminderDate(reminderYear, reminderMonth, reminderDay)){
+                            Dialog.toastMsg(requireContext(), "Invalid Date")
+                            binding.setDateErrorTxt.text = "Invalid Date"
+                        }
+                    }else{
+                        binding.setDateErrorTxt.text = ""
+                    }
+                }
+                if (!Validations.validateDay(reminderDay)){
+                    binding.setDateErrorTxt.text = "Date not set!!"
+                }else{
+                    if (reminderType.toString() == "Daily"){
+                        if (!Validations.validateDailyReminderDate(reminderYear)){
+                            binding.setDateErrorTxt.text = "Invalid Year selection"
+                        }
+                    }else if (reminderType.toString() == "One-time"){
+                        if (!Validations.validateOneTimeReminderTime(reminderHour, reminderMinute)){
+                            Dialog.toastMsg(requireContext(), "Invalid Time")
+                            binding.setTimeErrorTxt.text = "Invalid Time"
+                        }
+                        if (!Validations.validateOneTimeReminderDate(reminderYear, reminderMonth, reminderDay)){
+                            Dialog.toastMsg(requireContext(), "Invalid Date")
+                            binding.setDateErrorTxt.text = "Invalid Date"
+                        }
+                    }else{
+                        binding.setDateErrorTxt.text = ""
+                    }
+                }
+                if (!Validations.validateHour(reminderHour)){
+                    binding.setTimeErrorTxt.text = "Time not set!!"
+                }else{
+                    if (reminderType.toString() == "One-time"){
+                        if (!Validations.validateOneTimeReminderTime(reminderHour, reminderMinute)){
+                            Dialog.toastMsg(requireContext(), "Invalid Time")
+                            binding.setTimeErrorTxt.text = "Invalid Time"
+                        }
+                        if (!Validations.validateOneTimeReminderDate(reminderYear, reminderMonth, reminderDay)){
+                            Dialog.toastMsg(requireContext(), "Invalid Date")
+                            binding.setDateErrorTxt.text = "Invalid Date"
+                        }
+                    }else {
+                        binding.setTimeErrorTxt.text = ""
+                    }
+                }
+                if (!Validations.validateMinute(reminderMinute)){
+                    binding.setTimeErrorTxt.text = "Time not set!!"
+                }else{
+                    if (reminderType.toString() == "One-time"){
+                        if (!Validations.validateOneTimeReminderTime(reminderHour, reminderMinute)){
+                            Dialog.toastMsg(requireContext(), "Invalid Time")
+                            binding.setTimeErrorTxt.text = "Invalid Time"
+                        }
+                        if (!Validations.validateOneTimeReminderDate(reminderYear, reminderMonth, reminderDay)){
+                            Dialog.toastMsg(requireContext(), "Invalid Date")
+                            binding.setDateErrorTxt.text = "Invalid Date"
+                        }
+                    }else {
+                        binding.setTimeErrorTxt.text = ""
+                    }
+                }
+                if (!Validations.validateReminderType(reminderType.toString())){
+                    binding.reminderTypeErrorTxt.text = "Select type of reminder!!"
+                }else{
+                    binding.reminderTypeErrorTxt.text = ""
+                }
+                if (binding.reminderEditText.text.isEmpty()) {
+                    val task = DialogInterface.OnClickListener { dialogInterface, i ->
+                        dialogInterface.dismiss()
+                    }
+                    Dialog.alertDialog(successDialog, requireActivity(), requireContext(), "No Reminder Note",
+                    "Forgot to add a reminder note? Enter a reminder note in the text field below",
+                    "OK", "", null, null, R.style.RoundShapeTheme,
+                    task, task)
+                }
+                Dialog.toastMsg(requireContext(), "something is missing")
             }
         }
 
@@ -124,8 +274,8 @@ class WriteReminder : Fragment() {
 
     private fun insertReminder(year: Int, month: Int,
                                day: Int, hour: Int, minute: Int,
-                               date: String, time: String, note: String){
-        viewModel.insertReminder(year, month, day, hour, minute, date, time, note)
+                               date: String, time: String, note: String, reminderType: String){
+        viewModel.insertReminder(year, month, day, hour, minute, date, time, note, reminderType)
     }
 
     override fun onDestroyView() {
