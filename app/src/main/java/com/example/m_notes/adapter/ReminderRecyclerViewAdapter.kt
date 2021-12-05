@@ -31,6 +31,7 @@ class ReminderRecyclerViewAdapter(
             date.text = reminder.date
             time.text = reminder.time
             reminders.text = reminder.note
+            switch.isChecked = reminder.isSet
         }
     }
 
@@ -55,11 +56,9 @@ class ReminderRecyclerViewAdapter(
             reminderClickListener.onClick(position)
         }
 
-        holder.switch.isChecked = reminderList[position].isSet
-
-        holder.switch.setOnCheckedChangeListener { compoundButton, b ->
-            reminderSwitchListener.onSwitch(position, compoundButton.isChecked)
-            Log.d("AppViewModel: Switch", "${compoundButton.isChecked}")
+        holder.switch.setOnClickListener {
+            reminderSwitchListener.onSwitch(position, holder.switch.isChecked)
+//            Log.d("AppViewModel: Switch", "${compoundButton.isChecked}")
         }
     }
 

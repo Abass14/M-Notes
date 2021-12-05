@@ -21,7 +21,8 @@ interface MnotesRepository {
     suspend fun insertReminder (reminder: ReminderModel)
     val getReminders : LiveData<List<ReminderModel>>
     suspend fun deleteReminder (id: Int)
-    suspend fun updateReminder (year: Int, month: Int, day: Int, hour: Int, minute: Int, date: String, time: String, note: String, id:Int, isSet: Boolean)
+    suspend fun updateReminder (year: Int, month: Int, day: Int, hour: Int, minute: Int, date: String, time: String, note: String, id:Int, isSet: Boolean, showDialog: Int)
     suspend fun updateIsSetReminder(isSet: Boolean, id: Int)
+    suspend fun updateShowDialog(showDialog: Int, id: Int)
     fun getReminderById (id: Int) : LiveData<ReminderModel>
 }

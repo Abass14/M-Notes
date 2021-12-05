@@ -18,6 +18,7 @@ class SplashScreen : Fragment() {
     private var _binding: FragmentSplashScreenBinding? = null
     private val binding get() = _binding!!
     private var splashPrefValue: Int? = null
+    private var reminderFragment: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,17 +34,24 @@ class SplashScreen : Fragment() {
 
     private fun navigate(){
         AppSharedPreferences.initPreference(requireActivity())
+        reminderFragment = requireActivity().intent.getStringExtra("ReminderFragment")
         splashPrefValue = AppSharedPreferences.getSlashPref(AppSharedPreferences.SPLASH_KEY)
         val handler = Handler(Looper.getMainLooper())
-        if (splashPrefValue != null){
-            if (splashPrefValue!! == 1){
-                handler.postDelayed({
-                    findNavController().navigate(R.id.action_splashScreen_to_home2)
-                }, 2000)
-            }else {
-                handler.postDelayed({
-                    findNavController().navigate(R.id.action_splashScreen_to_onboardingOne)
-                }, 2000)
+        if (reminderFragment != null && reminderFragment == "Reminder"){
+            handler.postDelayed({
+                findNavController().navigate(R.id.action_splashScreen_to_reminder)
+            }, 2000)
+        }else {
+            if (splashPrefValue != null) {
+                if (splashPrefValue!! == 1) {
+                    handler.postDelayed({
+                        findNavController().navigate(R.id.action_splashScreen_to_home2)
+                    }, 2000)
+                } else {
+                    handler.postDelayed({
+                        findNavController().navigate(R.id.action_splashScreen_to_onboardingOne)
+                    }, 2000)
+                }
             }
         }
     }

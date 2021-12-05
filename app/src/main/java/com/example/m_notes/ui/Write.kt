@@ -1,5 +1,6 @@
 package com.example.m_notes.ui
 
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.example.m_notes.utils.CurrentDate
 import com.example.m_notes.utils.Dialog
 import com.example.m_notes.utils.Validations
 import com.example.m_notes.viewmodel.ApplicationViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -22,6 +24,8 @@ class Write : Fragment() {
     private  var _binding: FragmentWriteBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ApplicationViewModel by viewModels()
+    private var errorTxt: String? = null
+    private val dialog: MaterialAlertDialogBuilder? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,12 +52,31 @@ class Write : Fragment() {
             val date = CurrentDate.getCurrentDate()
             if (Validations.validateInsertNote(title, note)){
                 insertNotes(title, note, date)
-                Dialog.toastMsg(requireContext(), "Notes Saved Successfully")
+                showSuccessDialog()
                 findNavController().navigate(R.id.action_write_to_home2)
             }else{
-                binding.homeWriteErrorTxt.text = getString(R.string.write_error_msg)
+                showErrorDialog()
             }
         }
+    }
+
+    private fun showErrorDialog() {
+        val positiveTask = DialogInterface.OnClickListener { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+        errorTxt = getString(R.string.write_error_msg)
+        Dialog.alertDialog(dialog, requireActivity(), requireContext(), "Empty fields!!!", errorTxt,
+            "OK", "", null, null, R.style.RoundShapeTheme,
+            positiveTask, positiveTask)
+    }
+
+    private fun showSuccessDialog() {
+        val positiveTask = DialogInterface.OnClickListener { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+        Dialog.alertDialog(dialog, requireActivity(), requireContext(), "Successful!!", "Note Added Successfully! Press OK to continue",
+            "OK", "", null, null, R.style.RoundShapeTheme,
+            positiveTask, positiveTask)
     }
 
     private fun insertNotes(title: String, note: String, date: String){

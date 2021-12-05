@@ -1,5 +1,6 @@
 package com.example.m_notes.ui
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import com.example.m_notes.model.HomeNoteModel
 import com.example.m_notes.utils.CurrentDate
 import com.example.m_notes.utils.Dialog
 import com.example.m_notes.viewmodel.ApplicationViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,6 +28,8 @@ class HomeReadEdit : Fragment() {
     private val args: HomeReadEditArgs by navArgs()
     private val viewModel: ApplicationViewModel by viewModels()
     private var note: HomeNoteModel? = null
+    private var errorTxt: String? = null
+    private var dialog: MaterialAlertDialogBuilder? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,9 +67,20 @@ class HomeReadEdit : Fragment() {
                     args.id
                 )
                 findNavController().popBackStack()
-                Dialog.toastMsg(requireContext(), "Note Updated Successfully")
+                val positiveTask = DialogInterface.OnClickListener { dialogInterface, i ->
+                    dialogInterface.dismiss()
+                }
+                Dialog.alertDialog(dialog, requireActivity(), requireContext(), "Successful Update!!", "Note updated successfully! Press OK to continue",
+                    "OK", "", null, null, R.style.RoundShapeTheme,
+                    positiveTask, positiveTask)
             }else{
-                binding.homeReadEditErrorTxt.text = getString(R.string.note_update_error)
+                val positiveTask = DialogInterface.OnClickListener { dialogInterface, i ->
+                    dialogInterface.dismiss()
+                }
+                errorTxt = getString(R.string.note_update_error)
+                Dialog.alertDialog(dialog, requireActivity(), requireContext(), "No Updates!!", errorTxt,
+                    "OK", "", null, null, R.style.RoundShapeTheme,
+                    positiveTask, positiveTask)
             }
         }
     }

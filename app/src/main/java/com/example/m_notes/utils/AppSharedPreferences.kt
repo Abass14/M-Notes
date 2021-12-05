@@ -11,6 +11,7 @@ object AppSharedPreferences {
     const val SET_PASSWORD_KEY = "Set Password key"
     const val INPUT_PASSWORD_KEY = "Input password key"
     const val REMINDER_CHECK_KEY = "Reminder check key"
+    const val CANCEL_DIALOG_KEY = "Cancel dialog key"
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -44,6 +45,13 @@ object AppSharedPreferences {
     }
     fun getReminderSwitchPref(key: String): Boolean{
         return sharedPreferences.getBoolean(key, false)
+    }
+
+    fun setCancelDialogPref(value: Int) {
+        sharedPreferences.edit().putInt(CANCEL_DIALOG_KEY, value).apply()
+    }
+    fun getCancelDialogPref(key: String): Int{
+        return sharedPreferences.getInt(key, 0)
     }
 
 }

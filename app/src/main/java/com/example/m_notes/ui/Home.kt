@@ -7,14 +7,17 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -70,6 +73,14 @@ class Home : Fragment(), NoteClickListener, NoteLongClickListener {
     private fun clickListeners() {
         binding.homeAddNotesBtn.setOnClickListener {
             findNavController().navigate(R.id.action_home2_to_write)
+        }
+
+        binding.searchEdt.addTextChangedListener {
+            if (it?.length!! > 2){
+                searchNotes(it.toString())
+            }else{
+                observeAllNotes()
+            }
         }
     }
 
@@ -129,6 +140,13 @@ class Home : Fragment(), NoteClickListener, NoteLongClickListener {
 
     private fun archiveNote(title: String, note: String, date: String) {
         viewModel.insertArchivedNotes(title, note, date)
+    }
+
+    private fun searchNotes(text: String) {
+        noteList = noteList.filter { note ->
+                note.title.contains(text, true)
+        }
+        homeNotesAdapter.setNoteList(noteList)
     }
 
 
@@ -201,7 +219,7 @@ class Home : Fragment(), NoteClickListener, NoteLongClickListener {
         }
 
         Dialog.alertDialog(deleteDialog, requireActivity(), requireContext(), "Delete | Archive",
-                            "Click on DELETE to delete Note \n\nClick on ARCHIVE to archive Note \n\nTap outside to cancel", "Delete", "Archive",
+                            "Click on DELETE to delete Note \nClick on ARCHIVE to archive Note \nTap outside to cancel", "Delete", "Archive",
                             R.drawable.ic_baseline_delete_24, null, R.style.RoundShapeTheme,
                             taskPositive, taskNegative)
     }

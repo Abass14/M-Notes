@@ -60,6 +60,7 @@
                 android:id="@+id/setReminder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginStart="10dp"
                 app:layout_constraintStart_toStartOf="parent"/>

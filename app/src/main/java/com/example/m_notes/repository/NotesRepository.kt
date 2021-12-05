@@ -96,9 +96,9 @@ class NotesRepository @Inject constructor(
 
     override suspend fun updateReminder(year: Int, month: Int,
                                         day: Int, hour: Int, minute: Int,
-                                        date: String, time: String, note: String, id:Int, isSet: Boolean) {
+                                        date: String, time: String, note: String, id:Int, isSet: Boolean, showDialog: Int) {
         try {
-            reminderDao.updateReminder(year, month, day, hour, minute, date, time, note, id, isSet)
+            reminderDao.updateReminder(year, month, day, hour, minute, date, time, note, id, isSet, showDialog)
         }catch (e: Exception){
             e.printStackTrace()
         }
@@ -107,6 +107,14 @@ class NotesRepository @Inject constructor(
     override suspend fun updateIsSetReminder(isSet: Boolean, id: Int) {
         try {
             reminderDao.updateIsSetReminder(isSet, id)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
+    override suspend fun updateShowDialog(showDialog: Int, id: Int) {
+        try {
+            reminderDao.updateShowDialog(showDialog, id)
         }catch (e: Exception){
             e.printStackTrace()
         }

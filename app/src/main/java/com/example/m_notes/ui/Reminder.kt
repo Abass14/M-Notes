@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.icu.util.GregorianCalendar
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -51,6 +52,7 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
     private var alarmManager: Array<AlarmManager?>? = null
     val alarmIntentArray: ArrayList<PendingIntent> = arrayListOf()
     private lateinit var alarmIntent: PendingIntent
+    private var cancelPref: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,7 +68,8 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
         notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         Reminder.createNotificationChannel(notificationManager, PRIMARY_CHANNEL_ID)
         reminderList = listOf()
-        alarmManager = arrayOfNulls<AlarmManager?>(1000)
+        alarmManager = arrayOfNulls<AlarmManager?>(1000000)
+        cancelPref = AppSharedPreferences.getCancelDialogPref(AppSharedPreferences.CANCEL_DIALOG_KEY)
         AppSharedPreferences.initPreference(requireActivity())
         reminderRecyclerViewAdapter = ReminderRecyclerViewAdapter(this, this, this)
         setupRecyclerView()
@@ -115,6 +118,10 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
         viewModel.updateIsSetReminder(isSet, id)
     }
 
+    private fun updateShowDialog(showDialog: Int, id: Int){
+        viewModel.updateShowDialog(showDialog, id)
+    }
+
     private fun onBackPressed(){
         //Overriding onBack press to finish activity and exit app
         val callback = object : OnBackPressedCallback(true){
@@ -138,23 +145,97 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
         alarmIntent = notifyPendingIntent
         val calender = GregorianCalendar(reminder.year, reminder.month,
             reminder.day, reminder.hour, reminder.minute)
+        alarmManager!![position] = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            alarmManager!![position] = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            alarmManager!![position]?.setExact(
-                AlarmManager.RTC,
-                calender.timeInMillis, alarmIntent
-            )
+            if (reminder.year >= CurrentDate.year && reminder.day >= CurrentDate.day
+                && reminder.month >= CurrentDate.month && reminder.hour >= CurrentDate.hour
+                && reminder.minute > CurrentDate.minute) {
+                alarmManager!![position]?.setExact(
+                    AlarmManager.RTC,
+                    calender.timeInMillis, alarmIntent
+                )
+                showSuccessDialog(position)
+                alarmIntentArray.add(alarmIntent)
+            }else{
+                Dialog.toastMsg(requireContext(), "Reminder can't be ste on Invalid Date or Time")
+            }
         }else {
-            alarmManager!![position]?.set(
-                AlarmManager.RTC,
-                calender.timeInMillis, alarmIntent
-            )
+            if (reminder.year >= CurrentDate.year && reminder.day >= CurrentDate.day
+                && reminder.month >= CurrentDate.month && reminder.hour >= CurrentDate.hour
+                && reminder.minute > CurrentDate.minute) {
+                alarmManager!![position]?.set(
+                    AlarmManager.RTC,
+                    calender.timeInMillis, alarmIntent
+                )
+                showSuccessDialog(position)
+                alarmIntentArray.add(alarmIntent)
+            }else{
+                Dialog.toastMsg(requireContext(), "Reminder can't be ste on Invalid Date or Time")
+            }
         }
-        alarmIntentArray.add(alarmIntent)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun setRepeatingAlarm(position: Int) {
+        val reminder = reminderList[position]
+        val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
+            putExtra("Description", reminder.note)
+        }
+        val notifyPendingIntent = PendingIntent.getBroadcast(requireContext(),
+            position, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+        alarmIntent = notifyPendingIntent
+        val calender = GregorianCalendar(reminder.year, reminder.month,
+            reminder.day, reminder.hour, reminder.minute)
+        alarmManager!![position] = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            if (reminder.year >= CurrentDate.year && reminder.day >= CurrentDate.day
+                && reminder.month >= CurrentDate.month) {
+                alarmManager!![position]?.setInexactRepeating(
+                    AlarmManager.RTC,
+                    calender.timeInMillis,
+                    AlarmManager.INTERVAL_DAY,
+                    alarmIntent
+                )
+                showSuccessDialog(position)
+                alarmIntentArray.add(alarmIntent)
+            }else{
+                Dialog.toastMsg(requireContext(), "Reminder can't be set on Invalid Date")
+            }
+        }else{
+            if (reminder.year >= CurrentDate.year && reminder.day >= CurrentDate.day
+                && reminder.month >= CurrentDate.month) {
+                alarmManager!![position]?.setInexactRepeating(
+                    AlarmManager.RTC,
+                    calender.timeInMillis,
+                    AlarmManager.INTERVAL_DAY,
+                    alarmIntent
+                )
+                showSuccessDialog(position)
+                alarmIntentArray.add(alarmIntent)
+            }else{
+                Dialog.toastMsg(requireContext(), "Reminder can't be set on Invalid Date")
+            }
+        }
     }
 
     private fun cancelAlarm(position: Int){
-
+        val reminder = reminderList[position]
+        val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
+            putExtra("Description", reminder.note)
+        }
+        val notifyPendingIntent = PendingIntent.getBroadcast(requireContext(),
+            position, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+        alarmIntent = notifyPendingIntent
+        alarmManager!![position] = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager!![position]?.cancel(alarmIntent)
+        if (alarmIntentArray.contains(alarmIntent)) {
+            alarmIntentArray.remove(alarmIntent)
+            showCancelDialog()
+        }else{
+            Dialog.toastMsg(requireContext(), "Reminder has not been set")
+        }
     }
 
 
@@ -181,16 +262,43 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
         null, null, R.style.RoundShapeTheme, positiveTask, negativeTask)
     }
 
-    private fun showSuccessDialog(){
+    private fun showSuccessDialog(position: Int){
+        val reminder = reminderList[position]
         val positiveTask = DialogInterface.OnClickListener { dialogInterface, i ->
             dialogInterface.dismiss()
         }
         val negativeTask = DialogInterface.OnClickListener { dialogInterface, i ->
             dialogInterface.dismiss()
         }
-        Dialog.alertDialog(deleteDialog, requireActivity(), requireContext(), "Reminder Scheduled Successfully!!",
+        Dialog.alertDialog(deleteDialog, requireActivity(), requireContext(), "Reminder Scheduled for ${reminder.date} Successfully!!",
         "Press OK to Continue", "OK", "", null, null,
         R.style.RoundShapeTheme, positiveTask, negativeTask)
+    }
+
+    private fun showCancelDialog(){
+        val positiveTask = DialogInterface.OnClickListener { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+        val negativeTask = DialogInterface.OnClickListener { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+        Dialog.alertDialog(deleteDialog, requireActivity(), requireContext(), "Reminder Canceled Successfully!!",
+            "Press OK to Continue", "OK", "", null, null,
+            R.style.RoundShapeTheme, positiveTask, negativeTask)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun showReminderOptionDialog(position: Int){
+        val positiveTask = DialogInterface.OnClickListener { dialogInterface, i ->
+            setAlarm(position)
+        }
+        val negativeTask = DialogInterface.OnClickListener { dialogInterface, i ->
+            setRepeatingAlarm(position)
+        }
+        Dialog.alertDialog(deleteDialog, requireActivity(), requireContext(), "Select Reminder Type",
+            "Select ONE TIME for one time Reminder and DAILY for Daily Reminder",
+            "ONE-TIME", "DAILY", null, null,
+            R.style.RoundShapeTheme, positiveTask, negativeTask)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -198,17 +306,21 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
         val reminder = reminderList[position]
         if (!isChecked) {
             //FALSE -> CANCEL ALARM HERE
-            updateIsSetReminder(isChecked, reminder.id)
+            if (reminder.showDialog == 1) {
+                updateIsSetReminder(false, reminder.id)
+                cancelAlarm(position)
+            }else{
+                Dialog.toastMsg(requireContext(), "cancelled")
+            }
+            Dialog.toastMsg(requireContext(), "FIRST -> isChecked: ${isChecked} isSet -> ${reminder.isSet} $position ")
         }
         else{
             //TRUE -> SET ALARM HERE
-            updateIsSetReminder(isChecked, reminder.id)
-            setAlarm(position)
-            showSuccessDialog()
+            updateShowDialog(1, reminder.id)
+            updateIsSetReminder(true, reminder.id)
+            showReminderOptionDialog(position)
+            Dialog.toastMsg(requireContext(), "SECOND -> isChecked: ${isChecked} isSet -> ${reminder.isSet} $position")
         }
-        Log.d("AppViewModel: Switch", "${reminder.isSet}")
-            //TODO: set Alarm
-
     }
 
 }

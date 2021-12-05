@@ -87,15 +87,24 @@ class WriteReminder : Fragment() {
         }
 
         binding.reminderSave.setOnClickListener {
-            if (reminderYear != null && reminderMonth != null && reminderDay != null && reminderHour != null && reminderMinute != null){
-                insertReminder(
-                    reminderYear!!, reminderMonth!!,
-                    reminderDay!!, reminderHour!!, reminderMinute!!,
-                    binding.reminderDateTxt.text.toString(),
-                    binding.reminderTimeTxt.text.toString(),
-                    binding.reminderEditText.text.toString())
-                showSuccessDialog()
-                findNavController().popBackStack()
+            if (reminderYear != null && reminderMonth != null && reminderDay != null && reminderHour != null && reminderMinute != null && binding.reminderEditText.text.toString().isNotEmpty()) {
+                if (reminderYear!! >= CurrentDate.year && reminderDay!! >= CurrentDate.day
+                    && reminderMonth!! >= CurrentDate.month
+                ) {
+                    insertReminder(
+                        reminderYear!!, reminderMonth!!,
+                        reminderDay!!, reminderHour!!, reminderMinute!!,
+                        binding.reminderDateTxt.text.toString(),
+                        binding.reminderTimeTxt.text.toString(),
+                        binding.reminderEditText.text.toString()
+                    )
+                    showSuccessDialog()
+                    findNavController().popBackStack()
+                }else{
+                    Dialog.toastMsg(requireContext(), "Invalid Date Selection!!!")
+                }
+            }else{
+                Dialog.toastMsg(requireContext(), "Date, Time or Reminder Text Field can't be empty can't be left empty")
             }
         }
 

@@ -20,11 +20,12 @@ class NotesRecyclerViewAdapter(
     class NotesViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val title = view.findViewById<TextView>(R.id.homeNotesTitle)
         val date = view.findViewById<TextView>(R.id.homeNotesDates)
+        val note = view.findViewById<TextView>(R.id.notesDetails)
 
         fun bind(notes : HomeNoteModel){
             title.text = notes.title
             date.text = notes.date
-
+            note.text = notes.note
         }
     }
 

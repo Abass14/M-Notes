@@ -118,6 +118,10 @@
             android:id="@+id/action_splashScreen_to_home2"
             app:destination="@id/home2"
             app:enterAnim="@android:anim/slide_in_left" />
+        <action
+            android:id="@+id/action_splashScreen_to_reminder"
+            app:destination="@id/reminder"
+            app:enterAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/write"

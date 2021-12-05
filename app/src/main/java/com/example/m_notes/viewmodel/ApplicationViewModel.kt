@@ -149,7 +149,7 @@ class ApplicationViewModel @Inject constructor(private val mnotesRepository: Mno
     fun insertReminder(year: Int, month: Int,
                        day: Int, hour: Int, minute: Int,
                        date: String, time: String, note: String){
-        val reminder = ReminderModel(0, year, month, day, hour, minute, date, time, note, false)
+        val reminder = ReminderModel(0, year, month, day, hour, minute, date, time, note, false, 0)
         viewModelScope.launch(Dispatchers.IO){
             try {
                 mnotesRepository.insertReminder(reminder)
@@ -169,12 +169,22 @@ class ApplicationViewModel @Inject constructor(private val mnotesRepository: Mno
         }
     }
 
-    fun updateReminder(year: Int, month: Int,
-                       day: Int, hour: Int, minute: Int,
-                       date: String, time: String, note: String, id:Int, isSet: Boolean){
+    fun updateShowDialog(showDialog: Int, id: Int){
         viewModelScope.launch(Dispatchers.IO){
             try {
-                mnotesRepository.updateReminder(year, month, day, hour, minute, date, time, note, id, true)
+                mnotesRepository.updateShowDialog(showDialog, id)
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun updateReminder(year: Int, month: Int,
+                       day: Int, hour: Int, minute: Int,
+                       date: String, time: String, note: String, id:Int, isSet: Boolean, showDialog: Int){
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                mnotesRepository.updateReminder(year, month, day, hour, minute, date, time, note, id, true, showDialog)
             }catch (e: Exception){
                 e.printStackTrace()
             }

@@ -15,5 +15,6 @@ data class ReminderModel(
     val date: String,
     val time: String,
     val note: String,
-    val isSet: Boolean
+    val isSet: Boolean,
+    val showDialog: Int
 )
