@@ -1,5 +1,7 @@
 package com.example.m_notes
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -9,9 +11,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.example.m_notes.databinding.ActivityMainBinding
+import com.example.m_notes.utils.AppSharedPreferences
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private  lateinit var binding: ActivityMainBinding
+    private var exitDialog: AlertDialog? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -25,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             it.onNavDestinationSelected(navController)
         }
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
+        navController.addOnDestinationChangedListener { controller, destination, _ ->
             when(destination.id){
                 R.id.home2 -> {
                     showBottomNav()
@@ -59,4 +66,13 @@ class MainActivity : AppCompatActivity() {
         binding.appBottomNav.visibility = View.GONE
         binding.topAppBar.visibility = View.GONE
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val passwordPref = AppSharedPreferences.getPasswordPref(AppSharedPreferences.SET_PASSWORD_KEY)
+        if (passwordPref == 3){
+            AppSharedPreferences.setPasswordPref(2)
+        }
+    }
+
 }

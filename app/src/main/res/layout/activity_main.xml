@@ -15,6 +15,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/white"
         app:title="M-Notes"
+        app:titleTextAppearance="@style/Style_TextView"
+        app:subtitleTextAppearance="@style/Style_SubTextView"
         app:titleTextColor="@color/red_medium"
         android:elevation="10dp"
         android:outlineSpotShadowColor="@color/red_medium"
@@ -36,12 +38,13 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:background="@color/white"
-        app:itemRippleColor="#ea80fc"
+        app:itemRippleColor="@color/red_medium"
         app:itemIconTint="@color/red_medium"
         android:id="@+id/appBottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/menu_bottom_nav"
+        app:itemTextAppearanceActive="@style/Tab_Text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

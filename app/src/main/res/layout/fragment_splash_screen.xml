@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/red_dark"
+    android:background="@color/ash"
     tools:context=".ui.SplashScreen">
 
     <ImageView
@@ -40,4 +40,32 @@
         app:layout_constraintBottom_toBottomOf="@id/mTxt"
         app:layout_constraintStart_toEndOf="@id/mTxt"
         app:layout_constraintTop_toTopOf="@id/mTxt" />
+
+    <TextView
+        android:id="@+id/byTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="by"
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/AbassTxt"
+        android:layout_marginTop="180dp"/>
+
+    <TextView
+        android:id="@+id/AbassTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[Abass]"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/red_medium"
+        android:fontFamily="@font/montserrat"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

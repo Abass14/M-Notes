@@ -15,7 +15,9 @@ import com.example.m_notes.R
 import com.example.m_notes.adapter.OnboardingPagerAdapter
 import com.example.m_notes.databinding.FragmentOnboardingOneBinding
 import com.example.m_notes.model.OnBoardingModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OnboardingOne : Fragment() {
     private var _binding: FragmentOnboardingOneBinding? = null
     private val binding get() = _binding!!

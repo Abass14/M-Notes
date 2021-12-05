@@ -23,6 +23,9 @@
             app:destination="@id/writeArchive"
             app:enterAnim="@android:anim/fade_in"
             app:popEnterAnim="@android:anim/fade_in" />
+        <action
+            android:id="@+id/action_archive_to_archiveReadEdit"
+            app:destination="@id/archiveReadEdit" />
     </fragment>
     <fragment
         android:id="@+id/home2"
@@ -31,9 +34,7 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_home2_to_reminder"
-            app:destination="@id/reminder"
-            app:popUpTo="@id/home2"
-            app:popUpToInclusive="true" />
+            app:destination="@id/reminder" />
         <action
             android:id="@+id/action_home2_to_archive"
             app:destination="@id/archive" />
@@ -46,8 +47,12 @@
             android:id="@+id/action_home2_to_write"
             app:destination="@id/write"
             app:enterAnim="@android:anim/fade_in"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popUpToInclusive="false" />
+            app:popEnterAnim="@android:anim/fade_in" />
+        <action
+            android:id="@+id/action_home2_to_homeReadEdit"
+            app:destination="@id/homeReadEdit"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
     </fragment>
     <fragment
         android:id="@+id/onboardingOne"
@@ -94,6 +99,9 @@
             app:destination="@id/writeReminder"
             app:enterAnim="@android:anim/fade_in"
             app:popEnterAnim="@android:anim/fade_in" />
+        <action
+            android:id="@+id/action_reminder_to_reminderReadEdit"
+            app:destination="@id/reminderReadEdit" />
     </fragment>
     <fragment
         android:id="@+id/splashScreen"
@@ -106,6 +114,14 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/splashScreen"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashScreen_to_home2"
+            app:destination="@id/home2"
+            app:enterAnim="@android:anim/slide_in_left" />
+        <action
+            android:id="@+id/action_splashScreen_to_reminder"
+            app:destination="@id/reminder"
+            app:enterAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/write"
@@ -141,6 +157,46 @@
             android:id="@+id/action_writeArchive_to_archive"
             app:destination="@id/archive"
             app:popUpTo="@id/writeArchive"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/archiveReadEdit"
+        android:name="com.example.m_notes.ui.ArchiveReadEdit"
+        android:label="fragment_archive_read_edit"
+        tools:layout="@layout/fragment_archive_read_edit" >
+        <action
+            android:id="@+id/action_archiveReadEdit_to_archive"
+            app:destination="@id/archive"
+            app:popUpTo="@id/archiveReadEdit"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeReadEdit"
+        android:name="com.example.m_notes.ui.HomeReadEdit"
+        android:label="fragment_home_read_edit"
+        tools:layout="@layout/fragment_home_read_edit" >
+        <action
+            android:id="@+id/action_homeReadEdit_to_home2"
+            app:destination="@id/home2"
+            app:popUpTo="@id/homeReadEdit"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/reminderReadEdit"
+        android:name="com.example.m_notes.ui.ReminderReadEdit"
+        android:label="fragment_reminder_read_edit"
+        tools:layout="@layout/fragment_reminder_read_edit" >
+        <action
+            android:id="@+id/action_reminderReadEdit_to_reminder"
+            app:destination="@id/reminder"
+            app:popUpTo="@id/reminderReadEdit"
             app:popUpToInclusive="true" />
     </fragment>
 </navigation>

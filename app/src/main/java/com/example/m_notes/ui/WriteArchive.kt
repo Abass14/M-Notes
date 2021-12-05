@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.m_notes.R
 import com.example.m_notes.databinding.FragmentWriteArchiveBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class WriteArchive : Fragment() {
     private var _binding: FragmentWriteArchiveBinding? = null
     private val binding get() = _binding!!
