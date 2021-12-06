@@ -96,7 +96,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:gravity="top|start"
-            android:hint="Tap Edit Icon to write...."
+            android:hint="Write here...."
             android:padding="15dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

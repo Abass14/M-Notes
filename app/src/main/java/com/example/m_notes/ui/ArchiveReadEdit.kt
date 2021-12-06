@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -46,6 +47,7 @@ class ArchiveReadEdit : Fragment() {
         getArchivedNoteDetails(noteId)
         observeArchivedNoteDetails()
         clickListeners()
+        onBackPressed()
     }
 
     private fun clickListeners() {
@@ -100,6 +102,16 @@ class ArchiveReadEdit : Fragment() {
 
     private fun updateArchivedNote(title: String, note: String, date: String, id: Int){
         viewModel.updateArchivedNote(title, note, date, id)
+    }
+
+    private fun onBackPressed(){
+        //Overriding onBack press to finish activity and exit app
+        val callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(callback)
     }
 
     override fun onDestroyView() {

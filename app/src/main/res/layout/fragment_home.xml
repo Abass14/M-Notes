@@ -93,6 +93,15 @@
                         android:textColorHint="@color/red_medium"
                         android:hint="Search..."/>
                 </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:id="@+id/wrongSearchTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/searchLayout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@id/homeRecyclerviewLayout"/>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/homeRecyclerview"
                     android:layout_width="0dp"

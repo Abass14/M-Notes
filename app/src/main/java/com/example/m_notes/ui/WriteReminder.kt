@@ -17,6 +17,7 @@ import android.content.Intent
 import android.icu.util.GregorianCalendar
 import android.os.Build
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import com.example.m_notes.R
@@ -53,6 +54,7 @@ class WriteReminder : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         reminderTypeSetUp()
         clickListeners()
+        onBackPressed()
     }
 
     private fun reminderTypeSetUp() {
@@ -254,7 +256,6 @@ class WriteReminder : Fragment() {
                     "OK", "", null, null, R.style.RoundShapeTheme,
                     task, task)
                 }
-                Dialog.toastMsg(requireContext(), "something is missing")
             }
         }
 
@@ -276,6 +277,16 @@ class WriteReminder : Fragment() {
                                day: Int, hour: Int, minute: Int,
                                date: String, time: String, note: String, reminderType: String){
         viewModel.insertReminder(year, month, day, hour, minute, date, time, note, reminderType)
+    }
+
+    private fun onBackPressed(){
+        //Overriding onBack press to finish activity and exit app
+        val callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(callback)
     }
 
     override fun onDestroyView() {

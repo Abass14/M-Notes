@@ -48,7 +48,6 @@ class Archive : Fragment(), NoteClickListener, NoteLongClickListener {
         _binding = FragmentArchiveBinding.inflate(inflater, container, false)
         AppSharedPreferences.initPreference(requireActivity())
         val setPasswordPrefValue = AppSharedPreferences.getPasswordPref(AppSharedPreferences.SET_PASSWORD_KEY)
-        val setInputPasswordValue = AppSharedPreferences.getInputPasswordPref(AppSharedPreferences.INPUT_PASSWORD_KEY)
         if (setPasswordPrefValue == 0){
             showSetPasswordDialog()
         }else if (setPasswordPrefValue == 2){
@@ -88,7 +87,6 @@ class Archive : Fragment(), NoteClickListener, NoteLongClickListener {
     private fun showSetPasswordDialog(){
         passwordDialog = android.app.Dialog(requireContext())
         passwordDialog?.setContentView(R.layout.password_dialog_layout)
-        onBackPressed()
         val password = passwordDialog?.findViewById<EditText>(R.id.passwordInput)
         passwordGlobal = password?.text.toString()
         val confirmPassword = passwordDialog?.findViewById<EditText>(R.id.confirmPasswordInput)
@@ -161,14 +159,10 @@ class Archive : Fragment(), NoteClickListener, NoteLongClickListener {
                 }
             }
         }
-
         cancelBtn?.setOnClickListener {
             findNavController().navigate(R.id.action_archive_to_home2)
             inputPasswordDialog?.dismiss()
         }
-
-
-
         inputPasswordDialog?.show()
         inputPasswordDialog?.setCancelable(false)
         inputPasswordDialog?.setCanceledOnTouchOutside(false)

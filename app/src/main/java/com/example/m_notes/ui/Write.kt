@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.m_notes.R
@@ -39,6 +41,7 @@ class Write : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         clickListeners()
+        onBackPressed()
     }
 
     private fun clickListeners() {
@@ -56,6 +59,18 @@ class Write : Fragment() {
                 findNavController().navigate(R.id.action_write_to_home2)
             }else{
                 showErrorDialog()
+            }
+        }
+
+        autoTitle()
+    }
+
+    private fun autoTitle(){
+        if (binding.writeTitle.text.isEmpty()){
+            binding.writeEditText.addTextChangedListener { editable ->
+                if (editable?.length!! in 0..15){
+                    binding.writeTitle.text = editable
+                }
             }
         }
     }
@@ -81,6 +96,16 @@ class Write : Fragment() {
 
     private fun insertNotes(title: String, note: String, date: String){
         viewModel.insertHomeNotes(title, note, date)
+    }
+
+    private fun onBackPressed(){
+        //Overriding onBack press to finish activity and exit app
+        val callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(callback)
     }
 
     override fun onDestroyView() {

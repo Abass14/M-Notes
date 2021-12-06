@@ -9,9 +9,8 @@ object AppSharedPreferences {
     private const val MY_PREF = "My Pref"
     const val SPLASH_KEY = "Slash key"
     const val SET_PASSWORD_KEY = "Set Password key"
-    const val INPUT_PASSWORD_KEY = "Input password key"
-    const val REMINDER_CHECK_KEY = "Reminder check key"
-    const val CANCEL_DIALOG_KEY = "Cancel dialog key"
+    const val NIGHT_MODE_KEY = "Set Night Mode"
+//    const val CANCEL_DIALOG_KEY = "Cancel dialog key"
     const val PASSWORD_KEY = "Password"
 
     lateinit var sharedPreferences: SharedPreferences
@@ -34,31 +33,24 @@ object AppSharedPreferences {
         return sharedPreferences.getInt(key, 0)
     }
 
-    fun setInputPasswordPref(value: Int) {
-        sharedPreferences.edit().putInt(INPUT_PASSWORD_KEY, value).apply()
-    }
-    fun getInputPasswordPref(key: String) : Int{
-        return sharedPreferences.getInt(key, 0)
-    }
-
-    fun setReminderSwitchPref(isChecked: Boolean){
-        sharedPreferences.edit().putBoolean(REMINDER_CHECK_KEY, isChecked).apply()
-    }
-    fun getReminderSwitchPref(key: String): Boolean{
-        return sharedPreferences.getBoolean(key, false)
-    }
-
-    fun setCancelDialogPref(value: Int) {
-        sharedPreferences.edit().putInt(CANCEL_DIALOG_KEY, value).apply()
-    }
-    fun getCancelDialogPref(key: String): Int{
-        return sharedPreferences.getInt(key, 0)
-    }
+//    fun setCancelDialogPref(value: Int) {
+//        sharedPreferences.edit().putInt(CANCEL_DIALOG_KEY, value).apply()
+//    }
+//    fun getCancelDialogPref(key: String): Int{
+//        return sharedPreferences.getInt(key, 0)
+//    }
 
     fun setPassword(password: String){
         sharedPreferences.edit().putString(PASSWORD_KEY, password).apply()
     }
     fun getPassword(key: String) : String? {
         return sharedPreferences.getString(key, null)
+    }
+
+    fun setNightModePref(isNightMode: Boolean){
+        sharedPreferences.edit().putBoolean(NIGHT_MODE_KEY, isNightMode).apply()
+    }
+    fun getNightModePref(key: String): Boolean{
+        return sharedPreferences.getBoolean(key, false)
     }
 }

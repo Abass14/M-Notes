@@ -52,7 +52,6 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
     private var alarmManager: Array<AlarmManager?>? = null
     val alarmIntentArray: ArrayList<PendingIntent> = arrayListOf()
     private lateinit var alarmIntent: PendingIntent
-    private var cancelPref: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,7 +68,6 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
         Reminder.createNotificationChannel(notificationManager, PRIMARY_CHANNEL_ID)
         reminderList = listOf()
         alarmManager = arrayOfNulls<AlarmManager?>(1000000)
-        cancelPref = AppSharedPreferences.getCancelDialogPref(AppSharedPreferences.CANCEL_DIALOG_KEY)
         AppSharedPreferences.initPreference(requireActivity())
         reminderRecyclerViewAdapter = ReminderRecyclerViewAdapter(this, this, this)
         setupRecyclerView()
@@ -243,7 +241,7 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
     }
 
     override fun onClick(position: Int) {
-        Dialog.toastMsg(requireContext(), "Clicked")
+        Log.d("Reminder", "Clicked")
     }
 
     override fun onLongClick(position: Int) {

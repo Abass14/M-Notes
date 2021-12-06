@@ -123,6 +123,7 @@ class Home : Fragment(), NoteClickListener, NoteLongClickListener {
     }
 
     private fun observeAllNotes() {
+        binding.wrongSearchTv.text = ""
         viewModel.allNotesLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null){
                 homeNotesAdapter.setNoteList(it.reversed())
@@ -147,6 +148,9 @@ class Home : Fragment(), NoteClickListener, NoteLongClickListener {
                 note.title.contains(text, true)
         }
         homeNotesAdapter.setNoteList(noteList)
+        if (homeNotesAdapter.notesList.isEmpty()){
+            binding.wrongSearchTv.text = "No Notes with search input"
+        }
     }
 
 
