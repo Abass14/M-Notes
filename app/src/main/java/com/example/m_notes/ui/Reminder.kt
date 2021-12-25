@@ -49,8 +49,9 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
     private lateinit var reminderRecyclerViewAdapter: ReminderRecyclerViewAdapter
     private val deleteDialog: MaterialAlertDialogBuilder? = null
     private lateinit var notificationManager: NotificationManager
-    private var alarmManager: Array<AlarmManager?>? = null
-    val alarmIntentArray: ArrayList<PendingIntent> = arrayListOf()
+    private lateinit var theAlarmManager: AlarmManager
+    private val alarmIntentArray: ArrayList<PendingIntent> = arrayListOf()
+    private val repeatingAlarmIntentArray: ArrayList<PendingIntent> = arrayListOf()
     private lateinit var alarmIntent: PendingIntent
 
     override fun onCreateView(
@@ -67,7 +68,6 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
         notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         Reminder.createNotificationChannel(notificationManager, PRIMARY_CHANNEL_ID)
         reminderList = listOf()
-        alarmManager = arrayOfNulls<AlarmManager?>(1000000)
         AppSharedPreferences.initPreference(requireActivity())
         reminderRecyclerViewAdapter = ReminderRecyclerViewAdapter(this, this, this)
         setupRecyclerView()
@@ -133,43 +133,35 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setAlarm(position: Int){
         val reminder = reminderList[position]
+        theAlarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
             putExtra("Description", reminder.note)
         }
+        var count = AppSharedPreferences.getPendingIntentPosition(AppSharedPreferences.PI_COUNT)
+        viewLifecycleOwner.lifecycleScope.launch {
+            while (count < reminderList.size+10){
+                AppSharedPreferences.setPendingIntentPosition(count+1)
+                break
+            }
+        }
+        val pos = AppSharedPreferences.getPendingIntentPosition(AppSharedPreferences.PI_COUNT)
         val notifyPendingIntent = PendingIntent.getBroadcast(requireContext(),
-            position, intent,
+            pos, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
 
         alarmIntent = notifyPendingIntent
         val calender = GregorianCalendar(reminder.year, reminder.month,
             reminder.day, reminder.hour, reminder.minute)
-        alarmManager!![position] = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (reminder.year >= CurrentDate.year && reminder.day >= CurrentDate.day
-                && reminder.month >= CurrentDate.month && reminder.hour >= CurrentDate.hour
-                && reminder.minute > CurrentDate.minute) {
-                alarmManager!![position]?.setExact(
-                    AlarmManager.RTC,
-                    calender.timeInMillis, alarmIntent
-                )
-                showSuccessDialog(position)
-                alarmIntentArray.add(alarmIntent)
-            }else{
-                Dialog.toastMsg(requireContext(), "Reminder can't be ste on Invalid Date or Time")
-            }
-        }else {
-            if (reminder.year >= CurrentDate.year && reminder.day >= CurrentDate.day
-                && reminder.month >= CurrentDate.month && reminder.hour >= CurrentDate.hour
-                && reminder.minute > CurrentDate.minute) {
-                alarmManager!![position]?.set(
-                    AlarmManager.RTC,
-                    calender.timeInMillis, alarmIntent
-                )
-                showSuccessDialog(position)
-                alarmIntentArray.add(alarmIntent)
-            }else{
-                Dialog.toastMsg(requireContext(), "Reminder can't be ste on Invalid Date or Time")
-            }
+        if (reminder.year >= CurrentDate.year && reminder.day >= CurrentDate.day
+            && reminder.month >= CurrentDate.month) {
+            theAlarmManager.setExact(
+                AlarmManager.RTC,
+                calender.timeInMillis, alarmIntent
+            )
+            showSuccessDialog(position)
+            alarmIntentArray.add(alarmIntent)
+        }else{
+            Dialog.toastMsg(requireContext(), "Reminder can't be ste on Invalid Date or Time")
         }
     }
 
@@ -179,44 +171,38 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
         val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
             putExtra("Description", reminder.note)
         }
-        val notifyPendingIntent = PendingIntent.getBroadcast(requireContext(),
-            position, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT)
-        alarmIntent = notifyPendingIntent
-        val calender = GregorianCalendar(reminder.year, reminder.month,
-            reminder.day, reminder.hour, reminder.minute)
-        alarmManager!![position] = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            if (reminder.year >= CurrentDate.year) {
-                alarmManager!![position]?.setInexactRepeating(
-                    AlarmManager.RTC,
-                    calender.timeInMillis,
-                    AlarmManager.INTERVAL_DAY,
-                    alarmIntent
-                )
-                showSuccessDialog(position)
-                alarmIntentArray.add(alarmIntent)
-            }else{
-                Dialog.toastMsg(requireContext(), "Reminder can't be set on Invalid Date")
-            }
-        }else{
-            if (reminder.year >= CurrentDate.year) {
-                alarmManager!![position]?.setInexactRepeating(
-                    AlarmManager.RTC,
-                    calender.timeInMillis,
-                    AlarmManager.INTERVAL_DAY,
-                    alarmIntent
-                )
-                showSuccessDialog(position)
-                alarmIntentArray.add(alarmIntent)
-            }else{
-                Dialog.toastMsg(requireContext(), "Reminder can't be set on Invalid Date")
+        theAlarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        var count = AppSharedPreferences.getPendingIntentPosition(AppSharedPreferences.PI_COUNT)
+        viewLifecycleOwner.lifecycleScope.launch {
+            while (count < reminderList.size+10){
+                AppSharedPreferences.setPendingIntentPosition(count+1)
+                break
             }
         }
+        val pos = AppSharedPreferences.getPendingIntentPosition(AppSharedPreferences.PI_COUNT)
+        val notifyPendingIntent = PendingIntent.getBroadcast(requireContext(),
+            pos, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+        alarmIntent = notifyPendingIntent
+        val calender = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, reminder.hour)
+            set(Calendar.MINUTE, reminder.minute)
+        }
+        theAlarmManager.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calender.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            alarmIntent
+        )
+        showSuccessDialog(position)
+        repeatingAlarmIntentArray.add(alarmIntent)
     }
 
     private fun cancelAlarm(position: Int){
+        //you need to get the position of each pendingIntent to dynamically cancel alarms
         val reminder = reminderList[position]
+        theAlarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
             putExtra("Description", reminder.note)
         }
@@ -224,8 +210,7 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
             position, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
         alarmIntent = notifyPendingIntent
-        alarmManager!![position] = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager!![position]?.cancel(alarmIntent)
+        theAlarmManager.cancel(alarmIntent)
         if (alarmIntentArray.contains(alarmIntent)) {
             alarmIntentArray.remove(alarmIntent)
             showCancelDialog()

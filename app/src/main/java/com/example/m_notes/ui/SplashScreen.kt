@@ -72,7 +72,6 @@ class SplashScreen : Fragment() {
     override fun onResume() {
         super.onResume()
         navigate()
-//        nightModeCheck()
     }
 
     override fun onDestroyView() {

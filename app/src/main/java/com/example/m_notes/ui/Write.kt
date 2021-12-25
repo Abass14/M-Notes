@@ -61,14 +61,13 @@ class Write : Fragment() {
                 showErrorDialog()
             }
         }
-
-        autoTitle()
+//        autoTitle()
     }
 
     private fun autoTitle(){
-        if (binding.writeTitle.text.isEmpty()){
+        if (binding.writeTitle.text.isEmpty() || binding.writeTitle.text == null) {
             binding.writeEditText.addTextChangedListener { editable ->
-                if (editable?.length!! in 0..15){
+                if (editable?.length!! <= 15){
                     binding.writeTitle.text = editable
                 }
             }

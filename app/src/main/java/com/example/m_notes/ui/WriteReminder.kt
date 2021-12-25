@@ -105,22 +105,16 @@ class WriteReminder : Fragment() {
                 binding.setTimeErrorTxt.text = ""
                 binding.reminderTypeErrorTxt.text = ""
                         if (reminderType.toString() == "Daily"){
-                            if (Validations.validateDailyReminderDate(reminderYear)){
-                                insertReminder(
-                                    reminderYear!!, reminderMonth!!,
-                                    reminderDay!!, reminderHour!!, reminderMinute!!,
-                                    binding.reminderDateTxt.text.toString(),
-                                    binding.reminderTimeTxt.text.toString(),
-                                    binding.reminderEditText.text.toString(),
-                                    binding.reminderAutoCompleteTv.text.toString()
-                                )
-                                showSuccessDialog()
-                                findNavController().popBackStack()
-                            }else{
-                                if (!Validations.validateDailyReminderDate(reminderYear)){
-                                    binding.setDateErrorTxt.text = "Invalid Year selection"
-                                }
-                            }
+                            insertReminder(
+                                reminderYear!!, reminderMonth!!,
+                                reminderDay!!, reminderHour!!, reminderMinute!!,
+                                binding.reminderDateTxt.text.toString(),
+                                binding.reminderTimeTxt.text.toString(),
+                                binding.reminderEditText.text.toString(),
+                                binding.reminderAutoCompleteTv.text.toString()
+                            )
+                            showSuccessDialog()
+                            findNavController().popBackStack()
                         }else if(reminderType.toString() == "One-time"){
                             if (Validations.validateOneTimeReminderDate(reminderYear, reminderMonth, reminderDay) &&
                                     Validations.validateOneTimeReminderTime(reminderHour, reminderMinute)){
@@ -153,11 +147,7 @@ class WriteReminder : Fragment() {
                 if (!Validations.validateYear(reminderYear)){
                     binding.setDateErrorTxt.text = "Date not set!!"
                 }else{
-                    if (reminderType.toString() == "Daily"){
-                        if (!Validations.validateDailyReminderDate(reminderYear)){
-                            binding.setDateErrorTxt.text = "Invalid Year selection"
-                        }
-                    }else if (reminderType.toString() == "One-time"){
+                    if (reminderType.toString() == "One-time"){
                         if (!Validations.validateOneTimeReminderTime(reminderHour, reminderMinute)){
                             Dialog.toastMsg(requireContext(), "Invalid Time")
                             binding.setTimeErrorTxt.text = "Invalid Time"
@@ -173,11 +163,7 @@ class WriteReminder : Fragment() {
                 if (!Validations.validateMonth(reminderMonth)){
                     binding.setDateErrorTxt.text = "Date not set!!"
                 }else{
-                    if (reminderType.toString() == "Daily"){
-                        if (!Validations.validateDailyReminderDate(reminderYear)){
-                            binding.setDateErrorTxt.text = "Invalid Year selection"
-                        }
-                    }else if (reminderType.toString() == "One-time"){
+                  if (reminderType.toString() == "One-time"){
                         if (!Validations.validateOneTimeReminderTime(reminderHour, reminderMinute)){
                             Dialog.toastMsg(requireContext(), "Invalid Time")
                             binding.setTimeErrorTxt.text = "Invalid Time"

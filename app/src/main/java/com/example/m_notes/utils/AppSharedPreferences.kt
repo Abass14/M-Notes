@@ -12,6 +12,7 @@ object AppSharedPreferences {
     const val NIGHT_MODE_KEY = "Set Night Mode"
 //    const val CANCEL_DIALOG_KEY = "Cancel dialog key"
     const val PASSWORD_KEY = "Password"
+    const val PI_COUNT = "PI_COUNT"
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -52,5 +53,12 @@ object AppSharedPreferences {
     }
     fun getNightModePref(key: String): Boolean{
         return sharedPreferences.getBoolean(key, false)
+    }
+
+    fun setPendingIntentPosition(position: Int){
+        sharedPreferences.edit().putInt(PI_COUNT, position).apply()
+    }
+    fun getPendingIntentPosition(key: String): Int{
+        return sharedPreferences.getInt(key, 0)
     }
 }

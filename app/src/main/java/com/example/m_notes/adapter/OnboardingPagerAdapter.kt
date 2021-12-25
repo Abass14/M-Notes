@@ -36,32 +36,5 @@ class OnboardingPagerAdapter(val context: Context): RecyclerView.Adapter<Onboard
     override fun getItemCount(): Int {
         return data.size
     }
-//    override fun getCount(): Int {
-//        return data.size
-//    }
-//
-//    override fun isViewFromObject(view: View, `object`: Any): Boolean {
-//        return view == `object` as ConstraintLayout
-//    }
-//
-//    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-//        val view = LayoutInflater.from(container.context).inflate(R.layout.onboarding_layout, container, false)
-//
-//        data.add(OnBoardingModel(R.drawable.ic_baseline_sticky_note_2_24, "Add New Notes"))
-//        data.add(OnBoardingModel(R.drawable.ic_archive_24, "Archive Notes"))
-//        data.add(OnBoardingModel(R.drawable.ic_baseline_calendar_today_24, "Set Reminders"))
-//
-//        val sliderImage: ImageView = view.findViewById(R.id.onBoardingLogo)
-//        val sliderTxt: TextView = view.findViewById(R.id.onBoardingTxt)
-//        sliderImage.setImageResource(data[position].image)
-//        sliderTxt.text = data[position].text
-//
-//        container.addView(view)
-//
-//        return view
-//    }
-//
-//    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-//        container.removeView(`object` as ConstraintLayout)
-//    }
+
 }
