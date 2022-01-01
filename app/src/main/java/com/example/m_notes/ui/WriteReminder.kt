@@ -16,11 +16,15 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.icu.util.GregorianCalendar
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import com.example.m_notes.R
+import com.example.m_notes.model.ReminderModel
 import com.example.m_notes.utils.*
 import com.example.m_notes.utils.Dialog
 import com.example.m_notes.utils.Reminder
@@ -39,6 +43,7 @@ class WriteReminder : Fragment() {
     private var reminderYear: Int? = null
     private val viewModel: ApplicationViewModel by viewModels()
     private val successDialog: MaterialAlertDialogBuilder? = null
+    private var reminderList: List<ReminderModel> = listOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,8 +57,12 @@ class WriteReminder : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getReminders()
         reminderTypeSetUp()
-        clickListeners()
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            clickListeners()
+        }, 500)
         onBackPressed()
     }
 
@@ -61,6 +70,16 @@ class WriteReminder : Fragment() {
         val reminderType = resources.getStringArray(R.array.reminder_type)
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, reminderType)
         binding.reminderAutoCompleteTv.setAdapter(arrayAdapter)
+    }
+
+    private fun getReminders(){
+        viewModel.allReminderLiveData?.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            if (it != null){
+                reminderList = it
+                Log.d("ReminderPosition: Write 1", "${reminderList.size}")
+                Log.d("ReminderPosition: Write 2", "${it.size}")
+            }
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -94,6 +113,7 @@ class WriteReminder : Fragment() {
             )
             timePickerDialog.show()
         }
+        Log.d("ReminderPosition: Write", "${reminderList.size}")
 
         binding.reminderSave.setOnClickListener {
             val reminderType = binding.reminderAutoCompleteTv.text
@@ -111,7 +131,8 @@ class WriteReminder : Fragment() {
                                 binding.reminderDateTxt.text.toString(),
                                 binding.reminderTimeTxt.text.toString(),
                                 binding.reminderEditText.text.toString(),
-                                binding.reminderAutoCompleteTv.text.toString()
+                                binding.reminderAutoCompleteTv.text.toString(),
+                                reminderList.size
                             )
                             showSuccessDialog()
                             findNavController().popBackStack()
@@ -124,7 +145,8 @@ class WriteReminder : Fragment() {
                                     binding.reminderDateTxt.text.toString(),
                                     binding.reminderTimeTxt.text.toString(),
                                     binding.reminderEditText.text.toString(),
-                                    binding.reminderAutoCompleteTv.text.toString()
+                                    binding.reminderAutoCompleteTv.text.toString(),
+                                    reminderList.size
                                 )
                                 showSuccessDialog()
                                 findNavController().popBackStack()
@@ -261,8 +283,8 @@ class WriteReminder : Fragment() {
 
     private fun insertReminder(year: Int, month: Int,
                                day: Int, hour: Int, minute: Int,
-                               date: String, time: String, note: String, reminderType: String){
-        viewModel.insertReminder(year, month, day, hour, minute, date, time, note, reminderType)
+                               date: String, time: String, note: String, reminderType: String, reminderPosition: Int){
+        viewModel.insertReminder(year, month, day, hour, minute, date, time, note, reminderType, reminderPosition)
     }
 
     private fun onBackPressed(){

@@ -11,6 +11,8 @@ import android.icu.util.GregorianCalendar
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -70,10 +72,12 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
         reminderList = listOf()
         AppSharedPreferences.initPreference(requireActivity())
         reminderRecyclerViewAdapter = ReminderRecyclerViewAdapter(this, this, this)
+
         setupRecyclerView()
         clickListeners()
         onBackPressed()
         getReminders()
+        Log.d("RemList", "${reminderList.size}")
     }
 
     private fun showScreen () {
@@ -133,20 +137,14 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setAlarm(position: Int){
         val reminder = reminderList[position]
+        val reminderPosition = reminder.reminderPosition
+        Log.d("ReminderPosition: Get", "$reminderPosition")
         theAlarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
             putExtra("Description", reminder.note)
         }
-        var count = AppSharedPreferences.getPendingIntentPosition(AppSharedPreferences.PI_COUNT)
-        viewLifecycleOwner.lifecycleScope.launch {
-            while (count < reminderList.size+10){
-                AppSharedPreferences.setPendingIntentPosition(count+1)
-                break
-            }
-        }
-        val pos = AppSharedPreferences.getPendingIntentPosition(AppSharedPreferences.PI_COUNT)
         val notifyPendingIntent = PendingIntent.getBroadcast(requireContext(),
-            pos, intent,
+            reminderPosition, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
 
         alarmIntent = notifyPendingIntent
@@ -161,27 +159,22 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
             showSuccessDialog(position)
             alarmIntentArray.add(alarmIntent)
         }else{
-            Dialog.toastMsg(requireContext(), "Reminder can't be ste on Invalid Date or Time")
+            Dialog.toastMsg(requireContext(), "Reminder can't be set on Invalid Date or Time")
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setRepeatingAlarm(position: Int) {
         val reminder = reminderList[position]
+        val reminderPosition = reminder.reminderPosition
+        Log.d("ReminderPosition: Get", "$reminderPosition")
+        Toast.makeText(requireContext(), "$reminderPosition", Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
             putExtra("Description", reminder.note)
         }
         theAlarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        var count = AppSharedPreferences.getPendingIntentPosition(AppSharedPreferences.PI_COUNT)
-        viewLifecycleOwner.lifecycleScope.launch {
-            while (count < reminderList.size+10){
-                AppSharedPreferences.setPendingIntentPosition(count+1)
-                break
-            }
-        }
-        val pos = AppSharedPreferences.getPendingIntentPosition(AppSharedPreferences.PI_COUNT)
         val notifyPendingIntent = PendingIntent.getBroadcast(requireContext(),
-            pos, intent,
+            reminderPosition, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
         alarmIntent = notifyPendingIntent
         val calender = Calendar.getInstance().apply {
@@ -200,19 +193,23 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
     }
 
     private fun cancelAlarm(position: Int){
-        //you need to get the position of each pendingIntent to dynamically cancel alarms
         val reminder = reminderList[position]
+        val reminderPosition = reminder.reminderPosition
+        Toast.makeText(requireContext(), "$reminderPosition", Toast.LENGTH_SHORT).show()
         theAlarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
             putExtra("Description", reminder.note)
         }
         val notifyPendingIntent = PendingIntent.getBroadcast(requireContext(),
-            position, intent,
+            reminderPosition, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
         alarmIntent = notifyPendingIntent
         theAlarmManager.cancel(alarmIntent)
         if (alarmIntentArray.contains(alarmIntent)) {
             alarmIntentArray.remove(alarmIntent)
+            showCancelDialog()
+        }else if (repeatingAlarmIntentArray.contains(alarmIntent)){
+            repeatingAlarmIntentArray.remove(alarmIntent)
             showCancelDialog()
         }else{
             Dialog.toastMsg(requireContext(), "Reminder has not been set")
@@ -226,6 +223,9 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
     }
 
     override fun onClick(position: Int) {
+        val reminder = reminderList[position]
+        val action = ReminderDirections.actionReminderToReminderReadEdit(reminder)
+        findNavController().navigate(action)
         Log.d("Reminder", "Clicked")
     }
 
@@ -251,12 +251,12 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
         val negativeTask = DialogInterface.OnClickListener { dialogInterface, i ->
             dialogInterface.dismiss()
         }
-        Dialog.alertDialog(deleteDialog, requireActivity(), requireContext(), "Reminder Scheduled for ${reminder.date} Successfully!!",
+        Dialog.alertDialog(deleteDialog, requireActivity(), requireContext(), "Reminder Scheduled Successfully!!",
         "Press OK to Continue", "OK", "", null, null,
         R.style.RoundShapeTheme, positiveTask, negativeTask)
     }
 
-    private fun showCancelDialog(){
+    private fun showCancelDialog() {
         val positiveTask = DialogInterface.OnClickListener { dialogInterface, i ->
             dialogInterface.dismiss()
         }
@@ -276,6 +276,7 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
             if (reminder.showDialog == 1) {
                 updateIsSetReminder(false, reminder.id)
                 cancelAlarm(position)
+                Toast.makeText(requireContext(), "$position", Toast.LENGTH_SHORT).show()
             }else{
                 Dialog.toastMsg(requireContext(), "cancelled")
             }

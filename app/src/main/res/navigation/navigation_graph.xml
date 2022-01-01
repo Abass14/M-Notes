@@ -198,5 +198,8 @@
             app:destination="@id/reminder"
             app:popUpTo="@id/reminderReadEdit"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="reminder"
+            app:argType="com.example.m_notes.model.ReminderModel" />
     </fragment>
 </navigation>

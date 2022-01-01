@@ -19,8 +19,10 @@ interface ReminderDao {
     @Query("DELETE FROM ReminderTable WHERE id=:id")
     suspend fun deleteReminder(id: Int)
 
-    @Query("UPDATE ReminderTable SET year=:year, month=:month, day=:day, hour=:hour, minute=:minute, date=:date, time=:time, note=:note, isSet=:isSet, showDialog=:showDialog, reminderType=:reminderType WHERE id=:id")
-    suspend fun updateReminder(year: Int, month: Int, day: Int, hour: Int, minute: Int, date: String, time: String, note: String, id:Int, isSet: Boolean, showDialog: Int, reminderType: String)
+    @Query("UPDATE ReminderTable SET year=:year, month=:month, day=:day, hour=:hour, minute=:minute, date=:date, time=:time, note=:note, isSet=:isSet, showDialog=:showDialog, reminderType=:reminderType, reminderPosition=:reminderPosition WHERE id=:id")
+    suspend fun updateReminder(id: Int, year: Int, month: Int, day: Int, hour: Int, minute: Int,
+                               date: String, time: String, note: String, isSet: Boolean, showDialog: Int,
+                               reminderType: String, reminderPosition: Int)
 
     @Query("UPDATE ReminderTable SET showDialog=:showDialog WHERE id=:id")
     suspend fun updateShowDialog(showDialog: Int, id: Int)
