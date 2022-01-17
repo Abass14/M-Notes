@@ -1,16 +1,15 @@
-package com.example.m_notes
+package com.example.m_notes.activity
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
+import com.example.m_notes.R
 import com.example.m_notes.databinding.ActivityMainBinding
 import com.example.m_notes.utils.AppSharedPreferences
 import dagger.hilt.android.AndroidEntryPoint

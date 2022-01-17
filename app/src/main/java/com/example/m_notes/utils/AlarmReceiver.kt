@@ -5,10 +5,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.util.Log
-import androidx.core.net.toUri
-import com.example.m_notes.MainActivity
+import com.example.m_notes.activity.MainActivity
 
 class AlarmReceiver() : BroadcastReceiver() {
 

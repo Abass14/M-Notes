@@ -93,6 +93,7 @@ class Reminder : Fragment(), NoteClickListener, NoteLongClickListener, ReminderR
     private fun setupRecyclerView(){
         binding.reminderRecyclerview.apply {
             adapter = reminderRecyclerViewAdapter
+            isNestedScrollingEnabled = false
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
     }

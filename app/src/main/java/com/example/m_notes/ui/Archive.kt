@@ -78,6 +78,7 @@ class Archive : Fragment(), NoteClickListener, NoteLongClickListener {
     private fun setupRecyclerView(){
         binding.archiveRecyclerview.apply {
             adapter = archivedNotesAdapter
+            isNestedScrollingEnabled = false
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
     }

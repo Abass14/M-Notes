@@ -108,6 +108,7 @@ class Home : Fragment(), NoteClickListener, NoteLongClickListener {
     private fun setRecyclerView() {
         binding.homeRecyclerview.apply {
             adapter = homeNotesAdapter
+            isNestedScrollingEnabled = false
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
     }

@@ -11,6 +11,6 @@ object CurrentDate {
     val minute = calender.get(Calendar.MINUTE)
 
     fun getCurrentDate(): String {
-        return "$day-$month-$year"
+        return "$day-${month+1}-$year"
     }
 }
